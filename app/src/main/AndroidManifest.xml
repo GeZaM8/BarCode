@@ -13,6 +13,12 @@
         android:theme="@style/Theme.BarCode"
         tools:targetApi="31">
         <activity
+            android:name=".activity.RegisterProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity

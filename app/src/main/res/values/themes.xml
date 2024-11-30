@@ -7,4 +7,15 @@
     </style>
 
     <style name="Theme.BarCode" parent="Base.Theme.BarCode" />
+
+    <style name="input">
+        <item name="backgroundTint">#00000000</item>
+        <item name="android:paddingStart">23dp</item>
+        <item name="android:paddingEnd">23dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
 </resources>

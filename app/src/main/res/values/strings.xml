@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BarCode</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="nama_panjang">Nama Panjang</string>
+    <string name="nis">NIS</string>
+    <string name="nisn">NISN</string>
+    <string name="create">Create</string>
 </resources>
