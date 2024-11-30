@@ -1,4 +1,4 @@
-package com.barjek.barcode
+package com.barjek.barcode.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnLogin.setOnClickListener {
-            val intent = Intent(this, Login_Activity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnSignUp.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }

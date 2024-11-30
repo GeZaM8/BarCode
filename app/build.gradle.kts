@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.barjek.barcode"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.barjek.barcode"
