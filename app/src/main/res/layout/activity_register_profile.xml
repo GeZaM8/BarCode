@@ -71,7 +71,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/nama_panjang"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -90,7 +89,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="Absen"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -109,7 +107,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="Kelas"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -128,7 +125,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="Jurusan"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -147,7 +143,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/nisn"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -166,21 +161,17 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/nis"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnCreate"
+                style="@style/buttonGradient"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-                android:background="@drawable/btn_gradient"
-                android:text="@string/create"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
+                android:text="@string/create" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,6 @@
     <style name="Theme.BarCode" parent="Base.Theme.BarCode" />
 
     <style name="input">
-        <item name="backgroundTint">#00000000</item>
         <item name="android:paddingStart">23dp</item>
         <item name="android:paddingEnd">23dp</item>
         <item name="android:paddingTop">15dp</item>
@@ -17,5 +16,15 @@
         <item name="background">@color/white</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/black</item>
+        <item name="backgroundTint">#00000000</item>
+    </style>
+
+    <style name="buttonGradient">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/btn_gradient</item>
+        <item name="backgroundTint">@null</item>
     </style>
 </resources>

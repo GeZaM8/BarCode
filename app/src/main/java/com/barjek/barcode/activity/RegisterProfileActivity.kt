@@ -1,21 +1,21 @@
 package com.barjek.barcode.activity
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.barjek.barcode.R
+import com.barjek.barcode.databinding.ActivityRegisterProfileBinding
 
 class RegisterProfileActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterProfileBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityRegisterProfileBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_register_profile)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        setContentView(binding.root)
+
+        binding.btnCreate.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }

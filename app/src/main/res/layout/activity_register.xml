@@ -60,7 +60,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:textSize="20sp" />
@@ -78,7 +77,6 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -96,21 +94,17 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnRegister"
+                style="@style/buttonGradient"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-                android:background="@drawable/btn_gradient"
-                android:text="@string/sign_up"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:backgroundTint="@null" />
+                android:text="@string/sign_up"/>
         </LinearLayout>
 
         <TextView
