@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.Size
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
@@ -21,6 +22,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.barjek.barcode.R
 import com.barjek.barcode.databinding.ActivityCameraBinding
+import com.barjek.barcode.databinding.LayoutChooseMoodBinding
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -32,6 +34,9 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private lateinit var cameraExecuter: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
+    private lateinit var absensi: AlertDialog.Builder
+
+    private var isScanned = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCameraBinding.inflate(layoutInflater)
@@ -51,6 +56,11 @@ class CameraActivity : AppCompatActivity() {
             }
         }
         requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+
+        absensi = AlertDialog.Builder(this)
+        absensi.setOnDismissListener {
+            isScanned = false
+        }
     }
 
     private fun startCamera() {
@@ -84,6 +94,10 @@ class CameraActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalGetImage::class)
     private fun processImageProxy(imageProxy: ImageProxy) {
+        if (isScanned) {
+            imageProxy.close()
+            return
+        }
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
@@ -105,11 +119,18 @@ class CameraActivity : AppCompatActivity() {
     private fun handleBarcode(barcode: Barcode) {
         val url = barcode.url?.url ?: barcode.displayValue
         if (url != null) {
-            val absensi = AlertDialog.Builder(this)
+            var costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
+            var bindingView = LayoutChooseMoodBinding.bind(costumLayout)
 
-            val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
             absensi.setView(costumLayout)
             absensi.show()
+            Log.d("Code", "Terdetekso")
+            isScanned = true
+
+            bindingView.smile.setOnClickListener {
+                costumLayout = layoutInflater.inflate(R.layout)
+            }
+
 //            binding.textResult.text = url
 //            binding.textResult.setOnClickListener {
 //                val Open = AlertDialog.Builder(this)

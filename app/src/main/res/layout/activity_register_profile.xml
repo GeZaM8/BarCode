@@ -71,6 +71,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="@string/nama_panjang"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -89,6 +90,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="Absen"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -107,6 +109,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="Kelas"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -125,6 +128,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="Jurusan"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -143,6 +147,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="@string/nisn"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
@@ -161,6 +166,7 @@
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
                     android:hint="@string/nis"
                     android:inputType="textPassword"
                     android:textSize="20sp" />
