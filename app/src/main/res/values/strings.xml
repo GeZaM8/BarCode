@@ -9,4 +9,7 @@
     <string name="nis">NIS</string>
     <string name="nisn">NISN</string>
     <string name="create">Create</string>
+    <string name="baik">Hal baik apa yang terjadi?</string>
+    <string name="biasa">Oh! Apa yang terjadi hari ini?</string>
+    <string name="buruk">Ada apa denganmu??</string>
 </resources>

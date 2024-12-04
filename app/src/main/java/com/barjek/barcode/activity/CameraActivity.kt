@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import com.barjek.barcode.R
 import com.barjek.barcode.databinding.ActivityCameraBinding
 import com.barjek.barcode.databinding.LayoutChooseMoodBinding
+import com.barjek.barcode.databinding.LayoutReasonMoodBinding
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
@@ -119,16 +120,37 @@ class CameraActivity : AppCompatActivity() {
     private fun handleBarcode(barcode: Barcode) {
         val url = barcode.url?.url ?: barcode.displayValue
         if (url != null) {
-            var costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
-            var bindingView = LayoutChooseMoodBinding.bind(costumLayout)
+            val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
+            val bindingView = LayoutChooseMoodBinding.bind(costumLayout)
 
             absensi.setView(costumLayout)
             absensi.show()
-            Log.d("Code", "Terdetekso")
+//            Log.d("Code", "Terdetekso")
             isScanned = true
 
             bindingView.smile.setOnClickListener {
-                costumLayout = layoutInflater.inflate(R.layout)
+                val costumLayout1 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+                val bindingView1 = LayoutReasonMoodBinding.bind(costumLayout1)
+                absensi.setView(costumLayout1)
+                bindingView1.mood.setImageResource(R.drawable.smile)
+                bindingView1.textView1.setText(R.string.baik)
+                absensi.show()
+            }
+            bindingView.neutral.setOnClickListener {
+                val costumLayout2 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+                val bindingView2 = LayoutReasonMoodBinding.bind(costumLayout2)
+                absensi.setView(costumLayout2)
+                bindingView2.mood.setImageResource(R.drawable.neutral)
+                bindingView2.textView1.setText(R.string.biasa)
+                absensi.show()
+            }
+            bindingView.frown.setOnClickListener {
+                val costumLayout3 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+                val bindingView3 = LayoutReasonMoodBinding.bind(costumLayout3)
+                absensi.setView(costumLayout3)
+                bindingView3.mood.setImageResource(R.drawable.frown)
+                bindingView3.textView1.setText(R.string.buruk)
+                absensi.show()
             }
 
 //            binding.textResult.text = url

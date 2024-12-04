@@ -2,57 +2,73 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="160dp"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="160dp"
         android:padding="21dp">
 
-        <TextView
-            android:id="@+id/mood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose Your Mood"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
             android:orientation="horizontal"
-            android:padding="8dp"
+            android:padding="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mood">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/smile"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="25dp"
-                android:src="@drawable/smile" />
+                android:id="@+id/mood"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                app:srcCompat="@drawable/smile" />
 
-            <ImageView
-                android:id="@+id/neutral"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="25dp"
-                android:src="@drawable/neutral" />
-
-            <ImageView
-                android:id="@+id/frown"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_weight="1"
-                android:src="@drawable/frown" />
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/baik"
+                android:layout_gravity="center"
+                android:textSize="13sp" />
         </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
+
+            <EditText
+                android:id="@+id/inputReason"
+                style="@style/input"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ECF1F9"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/button"
+            style="@style/buttonBiasa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
