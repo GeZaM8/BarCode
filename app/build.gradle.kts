@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.google.mlkit:barcode-scanning:17.3.0")
     implementation("androidx.camera:camera-core:1.3.4")
     implementation("androidx.camera:camera-camera2:1.3.4")

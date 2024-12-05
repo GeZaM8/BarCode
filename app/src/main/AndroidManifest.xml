@@ -2,9 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -21,6 +26,9 @@
             android:name=".activity.CameraActivity"
             android:exported="false" />
         <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
+        <activity
             android:name=".activity.RegisterProfileActivity"
             android:exported="false" />
         <activity
@@ -33,7 +41,7 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".activity.NoInsideActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +53,15 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".geofence.GeofenceBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.location.GEOFENCE_EVENT" />
+                <action android:name="com.google.android.gms.location.GeofencingEvent" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
