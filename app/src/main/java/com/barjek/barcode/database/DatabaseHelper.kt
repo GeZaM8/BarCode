@@ -19,6 +19,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_PASSWORD = "password"
         private const val COLUMN_NAMA = "nama"
         private const val COLUMN_KELAS = "kelas"
+        private const val COLUMN_JURUSAN = "jurusan"
         private const val COLUMN_NIS = "nis"
         private const val COLUMN_NISN = "nisn"
 
@@ -38,6 +39,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_PASSWORD TEXT,
                 $COLUMN_NAMA TEXT,
                 $COLUMN_KELAS TEXT,
+                $COLUMN_JURUSAN TEXT,
                 $COLUMN_NIS TEXT,
                 $COLUMN_NISN TEXT
             )
@@ -72,6 +74,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_PASSWORD, user.password)
             put(COLUMN_NAMA, user.nama)
             put(COLUMN_KELAS, user.kelas)
+            put(COLUMN_JURUSAN, user.jurusan)
             put(COLUMN_NIS, user.nis)
             put(COLUMN_NISN, user.nisn)
         }
@@ -109,6 +112,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD)),
                 nama = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA)),
                 kelas = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KELAS)),
+                jurusan = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JURUSAN)),
                 nis = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIS)),
                 nisn = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NISN))
             )
@@ -127,6 +131,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_PASSWORD, user.password)
             put(COLUMN_NAMA, user.nama)
             put(COLUMN_KELAS, user.kelas)
+            put(COLUMN_JURUSAN, user.jurusan)
             put(COLUMN_NIS, user.nis)
             put(COLUMN_NISN, user.nisn)
         }
@@ -158,6 +163,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                     password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD)),
                     nama = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA)),
                     kelas = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KELAS)),
+                    jurusan = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JURUSAN)),
                     nis = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIS)),
                     nisn = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NISN))
                 )

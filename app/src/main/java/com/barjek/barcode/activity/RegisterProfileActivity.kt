@@ -19,10 +19,16 @@ class RegisterProfileActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
-        // Mengambil data dari intent
         val userId = intent.getStringExtra("USER_ID") ?: ""
         val email = intent.getStringExtra("EMAIL") ?: ""
         val password = intent.getStringExtra("PASSWORD") ?: ""
+
+        binding.inputNama.inputType = android.text.InputType.TYPE_CLASS_TEXT
+        binding.inputAbsen.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        binding.inputKelas.inputType = android.text.InputType.TYPE_CLASS_TEXT
+        binding.inputJurusan.inputType = android.text.InputType.TYPE_CLASS_TEXT
+        binding.inputNisn.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        binding.inputNis.inputType = android.text.InputType.TYPE_CLASS_NUMBER
 
         binding.btnCreate.setOnClickListener {
             val nama = binding.inputNama.text.toString()
@@ -40,25 +46,29 @@ class RegisterProfileActivity : AppCompatActivity() {
                 nisn.isEmpty() -> binding.inputNisn.error = "NISN tidak boleh kosong"
                 nis.isEmpty() -> binding.inputNis.error = "NIS tidak boleh kosong"
                 else -> {
-                    val user = User(
-                        id = userId,
-                        email = email,
-                        password = password,
-                        nama = nama,
-                        kelas = "$kelas $jurusan",
-                        nis = nis,
-                        nisn = nisn
-                    )
+                    try {
+                        val user = User(
+                            id = userId,
+                            email = email,
+                            password = password,
+                            nama = nama,
+                            kelas = kelas,
+                            jurusan = jurusan,
+                            nis = nis,
+                            nisn = nisn
+                        )
 
-                    val result = dbHelper.insertUser(user)
-                    if (result != -1L) {
-                        Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
-
-                        startActivity(Intent(this, LoginActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
+                        val result = dbHelper.insertUser(user)
+                        if (result != -1L) {
+                            Toast.makeText(this, "Registrasi berhasil", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, LoginActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                            finishAffinity()
+                        } else {
+                            Toast.makeText(this, "Registrasi gagal", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

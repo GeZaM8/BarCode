@@ -18,6 +18,6 @@ class SplashScreen : AppCompatActivity() {
             val intent = Intent(this, StartActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000L) // Delay 3 detik
+        }, 3000L)
     }
 }
