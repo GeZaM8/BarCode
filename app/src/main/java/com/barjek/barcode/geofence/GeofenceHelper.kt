@@ -64,32 +64,12 @@ object GeofenceHelper {
             geofenceList.add(geofence)
         }
 
-//        geofenceList.add(
-//            Geofence.Builder()
-//                .setRequestId("1")
-//                .setCircularRegion(
-//                    -6.321457958937427, 106.89950151492354, 100f
-//                )
-//                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
-//                .build()
-//        )
-
         val pendingIntent = getGeofencePendingIntent(context)
 //        Log.d("Geofence", "PendingIntent created: $pendingIntent")
 
         try {
             geofencingClient.addGeofences(getGeofencingRequest(), pendingIntent)
                 .addOnCompleteListener {
-//                    if (it.isSuccessful) {
-//                        Toast.makeText(context, "Geofence added", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        Toast.makeText(
-//                            context,
-//                            "Failed to add geofence: ${it.exception?.message}",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
                 }
         } catch (e: SecurityException) {
             Toast.makeText(context, "SecurityException: ${e.message}", Toast.LENGTH_SHORT).show()

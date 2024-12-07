@@ -12,8 +12,8 @@
     <style name="input">
         <item name="android:paddingStart">23dp</item>
         <item name="android:paddingEnd">23dp</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
         <item name="background">@color/white</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/black</item>
