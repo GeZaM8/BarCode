@@ -14,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnLogin.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
+            val intent = Intent(this, NoInsideActivity::class.java)
             startActivity(intent)
         }
     }
