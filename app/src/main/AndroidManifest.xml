@@ -23,10 +23,13 @@
         android:theme="@style/Theme.BarCode"
         tools:targetApi="31">
         <activity
+            android:name=".activity.StartActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".activity.NoInsideActivity"
             android:exported="false" />
         <activity
             android:name=".activity.RegisterProfileActivity"
@@ -41,7 +44,7 @@
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.NoInsideActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,4 +12,13 @@
     <string name="baik">Hal baik apa yang terjadi?</string>
     <string name="biasa">Oh! Apa yang terjadi hari ini?</string>
     <string name="buruk">Ada apa denganmu??</string>
+
+    <string name="slidetitle1">Scan QR untuk absensi instan</string>
+    <string name="slidedetail1">Cukup pindai kode QR untuk mendaftarkan presensi dengan cepat dan akurat, memastikan proses check-in yang lancar dan efisien.</string>
+    <string name="slidetitle2">Jadwal dan Informasi Lengkap Setiap Pelajaran</string>
+    <string name="slidedetail2">Memungkinkan Anda melihat jadwal dan informasi lengkap setiap pelajaran, memudahkan pengelolaan waktu dan materi belajar.</string>
+    <string name="slidetitle3">Peringkat Siswa Paling Rajin</string>
+    <string name="slidedetail3">menampilkan peringkat siswa paling rajin berdasarkan kehadiran dan partisipasi, memotivasi untuk terus berprestasi.</string>
+    <string name="slidetitle4">Hello!</string>
+    <string name="slidedetail4">Welcome to the Barcode App. Scan your way to seamless and reliable attendance.</string>
 </resources>
