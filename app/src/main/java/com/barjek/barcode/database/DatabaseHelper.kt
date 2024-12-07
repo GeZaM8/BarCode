@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.barjek.barcode.model.User
+import com.barjek.barcode.model.Presence
 
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -29,6 +30,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_DATE = "date"
         private const val COLUMN_STATUS = "status"
         private const val COLUMN_TIMESTAMP = "timestamp"
+        private const val COLUMN_LOCATION = "location"
+        private const val COLUMN_MOOD = "mood"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -54,6 +57,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_DATE TEXT,
                 $COLUMN_STATUS TEXT,
                 $COLUMN_TIMESTAMP TEXT,
+                $COLUMN_LOCATION TEXT,
+                $COLUMN_MOOD TEXT,
                 FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_ID)
             )
         """.trimIndent()
@@ -172,5 +177,33 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
         cursor.close()
         return userList
+    }
+
+    fun insertPresence(presence: Presence): Long {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_HADIR_ID, presence.hadirId)
+            put(COLUMN_USER_ID, presence.userId)
+            put(COLUMN_DATE, presence.date)
+            put(COLUMN_STATUS, presence.status)
+            put(COLUMN_TIMESTAMP, presence.timestamp)
+            put(COLUMN_LOCATION, presence.location)
+            put(COLUMN_MOOD, presence.mood)
+        }
+        return db.insert(TABLE_HADIR, null, values)
+    }
+
+    fun checkTodayPresence(userId: String, today: String): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.query(
+            TABLE_HADIR,
+            arrayOf(COLUMN_HADIR_ID),
+            "$COLUMN_USER_ID = ? AND $COLUMN_DATE = ?",
+            arrayOf(userId, today),
+            null, null, null
+        )
+        val result = cursor.count > 0
+        cursor.close()
+        return result
     }
 }
