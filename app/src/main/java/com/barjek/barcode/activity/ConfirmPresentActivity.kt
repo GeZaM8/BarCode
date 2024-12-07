@@ -15,5 +15,9 @@ class ConfirmPresentActivity : AppCompatActivity() {
         binding = ActivityConfirmPresentBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.btnKirim.setOnClickListener {
+
+        }
     }
 }
