@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.barjek.barcode.activity.MainActivity
 import com.barjek.barcode.activity.StartActivity
 
 class SplashScreen : AppCompatActivity() {
