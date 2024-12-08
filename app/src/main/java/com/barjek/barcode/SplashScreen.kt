@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.barjek.barcode.activity.HomePageActivity
 import com.barjek.barcode.activity.StartActivity
 
 class SplashScreen : AppCompatActivity() {
@@ -15,7 +16,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, StartActivity::class.java)
+            val intent = Intent(this, HomePageActivity::class.java)
             startActivity(intent)
             finish()
         }, 3000L)
