@@ -22,4 +22,6 @@
     <string name="slidetitle4">Hello!</string>
     <string name="slidedetail4">Welcome to the Barcode App. Scan your way to seamless and reliable attendance.</string>
     <string name="kirim">Kirim</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
