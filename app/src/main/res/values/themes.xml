@@ -27,7 +27,6 @@
         <item name="android:background">@drawable/btn_gradient</item>
         <item name="backgroundTint">@null</item>
     </style>
-
     <style name="buttonBiasa">
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">25sp</item>
@@ -36,4 +35,12 @@
         <item name="android:background">@drawable/btn_blue</item>
         <item name="backgroundTint">@null</item>
     </style>
+
+    <style name="buttonYellow">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@drawable/btn_yellow</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+
 </resources>
