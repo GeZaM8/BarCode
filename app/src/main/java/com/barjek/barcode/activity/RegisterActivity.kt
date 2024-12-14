@@ -43,5 +43,10 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.hrefLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

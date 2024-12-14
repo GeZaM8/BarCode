@@ -5,7 +5,10 @@
     <color name="blue">#1C407A</color>
     <color name="blue2">#3375E0</color>
     <color name="blue3">#9EC1FB</color>
+    <color name="blue4">#ECF1F9</color>
     <color name="gray">#D9D9D9</color>
     <color name="gray2">#ADADAD</color>
+    <color name="gray3">#E7E4E4</color>
     <color name="yellow">#FBBE23</color>
+    <color name="red">#E86363</color>
 </resources>

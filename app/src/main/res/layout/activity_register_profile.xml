@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/hrefLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Make Your Profile"
@@ -36,7 +36,7 @@
             app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
+            app:layout_constraintTop_toBottomOf="@+id/hrefLogin">
 
             <ImageView
                 android:layout_width="match_parent"

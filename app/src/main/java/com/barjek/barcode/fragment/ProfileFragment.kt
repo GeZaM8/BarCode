@@ -1,11 +1,18 @@
 package com.barjek.barcode.fragment
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.finishAffinity
 import com.barjek.barcode.R
+import com.barjek.barcode.activity.LoginActivity
+import com.barjek.barcode.database.DatabaseHelper
+import com.barjek.barcode.databinding.FragmentProfileBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +29,9 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentProfileBinding
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +44,36 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dbHelper = DatabaseHelper(view.context)
+
+        val sharedPref = view.context.getSharedPreferences("UserPref", Context.MODE_PRIVATE)
+        val userEmail = sharedPref.getString("email", "") ?: ""
+
+        val user = dbHelper.getUserByEmail(userEmail)
+
+        user?.let {
+            binding.tvName.text = it.nama
+            binding.tvClass.text = "${it.kelas} ${it.jurusan}"
+            binding.tvNISN.text = it.nisn
+            binding.tvNIS.text = it.nis
+        }
+
+        binding.btnBack.setOnClickListener {
+
+        }
+
+        binding.btnLogout.setOnClickListener {
+            sharedPref.edit().clear().apply()
+            startActivity(Intent(view.context, LoginActivity::class.java))
+            finishAffinity(view.context as Activity)
+        }
     }
 
     companion object {

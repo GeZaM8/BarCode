@@ -11,7 +11,7 @@ import com.barjek.barcode.model.Presence
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
-        private const val DATABASE_NAME = "UserDB"
+        private const val DATABASE_NAME = "UserDB.db"
         private const val DATABASE_VERSION = 1
         private const val TABLE_USER = "user"
 

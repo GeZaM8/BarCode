@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                             Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, NoInsideActivity::class.java)
+                            startActivity(Intent(this, HomePageActivity::class.java)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                             finish()
                         }
@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        binding.textView4.setOnClickListener {
+        binding.hrefRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
