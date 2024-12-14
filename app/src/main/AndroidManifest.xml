@@ -23,7 +23,7 @@
         android:theme="@style/Theme.BarCode"
         tools:targetApi="31">
         <activity
-            android:name=".activity.YourProfile"
+            android:name=".activity.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activity.ConfirmPresentActivity"

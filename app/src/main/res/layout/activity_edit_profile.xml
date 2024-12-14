@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RegisterProfileActivity">
+    tools:context=".activity.EditProfileActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -58,10 +58,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
+            <TextView
+                android:id="@+id/nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/nama_panjang"
+                android:textColor="@color/gray2"/>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp">
@@ -73,14 +81,22 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#00000000"
                     android:hint="@string/nama_panjang"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/absen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/nama_panjang"
+                android:textColor="@color/gray2"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp">
@@ -92,14 +108,22 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#00000000"
                     android:hint="Absen"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/kelas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/kelas"
+                android:textColor="@color/gray2"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp">
@@ -111,52 +135,22 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#00000000"
                     android:hint="@string/kelas"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/nis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/nis"
+                android:textColor="@color/gray2"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp">
-
-                <EditText
-                    android:id="@+id/inputJurusan"
-                    style="@style/input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#00000000"
-                    android:hint="Jurusan"
-                    android:inputType="textPassword"
-                    android:textSize="20sp" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:layout_weight="1"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp">
-
-                <EditText
-                    android:id="@+id/inputNisn"
-                    style="@style/input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#00000000"
-                    android:hint="@string/nisn"
-                    android:inputType="textPassword"
-                    android:textSize="20sp" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="4dp">
@@ -168,7 +162,61 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="#00000000"
                     android:hint="@string/nis"
-                    android:inputType="textPassword"
+                    android:inputType="text"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/nisn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/nisn"
+                android:textColor="@color/gray2"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <EditText
+                    android:id="@+id/inputNisn"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
+                    android:hint="@string/nisn"
+                    android:inputType="text"
+                    android:textSize="20sp" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="@string/email"
+                android:textColor="@color/gray2"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="4dp">
+
+                <EditText
+                    android:id="@+id/inputEmail"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00000000"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
                     android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
 
@@ -177,7 +225,7 @@
                 style="@style/buttonGradient"
                 android:layout_width="match_parent"
                 android:layout_height="51dp"
-                android:text="@string/create" />
+                android:text="@string/save" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

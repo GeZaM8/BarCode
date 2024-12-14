@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat.finishAffinity
 import com.barjek.barcode.R
+import com.barjek.barcode.activity.EditProfileActivity
 import com.barjek.barcode.activity.LoginActivity
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.FragmentProfileBinding
@@ -67,6 +68,11 @@ class ProfileFragment : Fragment() {
 
         binding.btnBack.setOnClickListener {
 
+        }
+
+        binding.detailProfile.setOnClickListener {
+            val intent = Intent(view.context, EditProfileActivity::class.java)
+            (view.context as Activity).startActivity(intent)
         }
 
         binding.btnLogout.setOnClickListener {

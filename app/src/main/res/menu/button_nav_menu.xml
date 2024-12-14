@@ -16,6 +16,6 @@
         android:title="Schedule" />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/copybook"
+        android:icon="@drawable/user"
         android:title="Profile" />
 </menu>

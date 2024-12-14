@@ -5,17 +5,32 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
     tools:context=".activity.YourProfile">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9"/>
 
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_back"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_arrow_back_ios_new_24"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,32 +42,33 @@
         android:textColor="@color/blue"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/detailProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/blue4"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingTop="40dp"
             android:paddingStart="18dp"
+            android:paddingTop="40dp"
             android:paddingEnd="18dp"
-            android:paddingBottom="40dp"
-            android:gravity="center">
+            android:paddingBottom="40dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,9 +85,10 @@
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Your Name"
-                    android:textColor="@color/gray2" />
+                    android:textColor="@color/blue3"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -89,9 +106,10 @@
                     android:id="@+id/tvAbsen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Your Absen"
-                    android:textColor="@color/gray2" />
+                    android:textColor="@color/blue3"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,9 +127,10 @@
                     android:id="@+id/tvClass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Your Class"
-                    android:textColor="@color/gray2" />
+                    android:textColor="@color/blue3"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -129,9 +148,10 @@
                     android:id="@+id/tvNISN"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Your NISN"
-                    android:textColor="@color/gray2" />
+                    android:textColor="@color/blue3"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -148,9 +168,10 @@
                     android:id="@+id/tvNIS"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="12dp"
                     android:text="Your NIS"
-                    android:textColor="@color/gray2" />
+                    android:textColor="@color/blue3"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -165,10 +186,10 @@
         android:translationY="-35dp"
         app:cardCornerRadius="73dp"
         app:cardElevation="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintBottom_toTopOf="@+id/detailProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cardView2">
+        app:layout_constraintTop_toTopOf="@+id/detailProfile">
 
         <ImageView
             android:id="@+id/ivProfile"
@@ -179,22 +200,34 @@
 
     </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/btnLogout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/blue4"
-        android:drawableStart="@drawable/logout"
-        android:padding="12dp"
-        android:text="Logout"
-        android:textColor="@color/red"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="8dp"
+        app:cardBackgroundColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailProfile">
+
+        <Button
+            android:id="@+id/btnLogout"
+            style="@style/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="Logout"
+            android:textAlignment="textStart"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/logout"
+            app:iconPadding="20dp"
+            app:iconSize="30dp"
+            app:iconTint="@null" />
+    </androidx.cardview.widget.CardView>
 
 
-    <!-- Gw ga bisa mainin desain geeeeeee  -->
 </androidx.constraintlayout.widget.ConstraintLayout>
