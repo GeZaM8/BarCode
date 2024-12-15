@@ -26,4 +26,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">Save</string>
     <string name="kelas">Kelas</string>
+    <string name="absen">Absen</string>
+    <string name="jurusan">Jurusan</string>
 </resources>
