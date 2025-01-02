@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                     if (dbHelper.checkUser(email, password)) {
                         val user = dbHelper.getUserByEmail(email)
                         if (user != null) {
-                            val sharedPref = getSharedPreferences("LoginPref", MODE_PRIVATE)
+                            val sharedPref = getSharedPreferences("UserPref", MODE_PRIVATE)
                             with(sharedPref.edit()) {
                                 putString("USER_ID", user.id)
                                 putString("EMAIL", user.email)

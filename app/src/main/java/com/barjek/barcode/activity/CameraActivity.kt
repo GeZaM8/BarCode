@@ -206,7 +206,7 @@ class CameraActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun handleBarcode(barcode: Barcode) {
         val url = barcode.url?.url ?: barcode.displayValue
-        if (url != null) {
+//        if (url != null) {
             val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
             val bindingView = LayoutChooseMoodBinding.bind(costumLayout)
 
@@ -255,9 +255,7 @@ class CameraActivity : AppCompatActivity() {
 //                }
 //                Open.show()
 //            }
-        } else {
-//            binding.textResult.text = "No QR Code detected"
-        }
+//        }
     }
 
     override fun onDestroy() {
