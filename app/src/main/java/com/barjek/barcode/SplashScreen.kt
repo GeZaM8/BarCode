@@ -28,37 +28,38 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         dbHelper = DatabaseHelper(this)
+        supportActionBar?.hide()
 
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
-        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
-
-        val login = getSharedPreferences("UserPref", MODE_PRIVATE)
-        val email = login.getString("EMAIL", "") ?: ""
-
-        val user = dbHelper.getUserByEmail(email) ?: User()
-
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
-        val intent = when(isFirstRun) {
-            true -> {
-                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
-                Intent(this, StartActivity::class.java)
-            }
-            else -> {
-                if (user.id.isBlank()) {
-                    Intent(this, LoginActivity::class.java)
-                } else {
-                    if (dbHelper.checkTodayPresence(user.id, today)) Intent(this, HomePageActivity::class.java)
-                    else Intent(this, NoInsideActivity::class.java)
-                }
-            }
-        }
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(intent)
-            finish()
-        }, 3000L)
+//        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+//        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+//
+//        val login = getSharedPreferences("UserPref", MODE_PRIVATE)
+//        val email = login.getString("EMAIL", "") ?: ""
+//
+//        val user = dbHelper.getUserByEmail(email) ?: User()
+//
+//        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+//
+//        val intent = when(isFirstRun) {
+//            true -> {
+//                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
+//                Intent(this, StartActivity::class.java)
+//            }
+//            else -> {
+//                if (user.id.isBlank()) {
+//                    Intent(this, LoginActivity::class.java)
+//                } else {
+//                    if (dbHelper.checkTodayPresence(user.id, today)) Intent(this, HomePageActivity::class.java)
+//                    else Intent(this, NoInsideActivity::class.java)
+//                }
+//            }
+//        }
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            startActivity(intent)
+//            finish()
+//        }, 3000L)
     }
 }
