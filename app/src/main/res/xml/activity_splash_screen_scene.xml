@@ -185,7 +185,7 @@
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintDimensionRatio="1:2"
+            motion:layout_constraintDimensionRatio="2:3"
             android:scaleX="3"
             android:scaleY="3"/>
     </ConstraintSet>

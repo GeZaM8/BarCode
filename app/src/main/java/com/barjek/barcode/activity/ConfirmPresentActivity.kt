@@ -2,6 +2,7 @@ package com.barjek.barcode.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.barjek.barcode.database.DatabaseHelper
@@ -23,8 +24,13 @@ class ConfirmPresentActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
+        val mood = intent.getStringExtra("mood") ?: "Neutral"
+        val reason = intent.getStringExtra("reason") ?: ""
+
+        binding.inputMood.hint = mood
+
         val sharedPref = getSharedPreferences("UserPref", Context.MODE_PRIVATE)
-        val userEmail = sharedPref.getString("email", "") ?: ""
+        val userEmail = sharedPref.getString("EMAIL", "") ?: ""
 
         val user = dbHelper.getUserByEmail(userEmail)
 
@@ -40,7 +46,7 @@ class ConfirmPresentActivity : AppCompatActivity() {
         }
 
         binding.btnKirim.setOnClickListener {
-            val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            val today = SimpleDateFormat("EEEE-yyyy-MM-dd", Locale.getDefault()).format(Date())
             
             user?.let { currentUser ->
                 if (dbHelper.checkTodayPresence(currentUser.id, today)) {
@@ -53,10 +59,11 @@ class ConfirmPresentActivity : AppCompatActivity() {
                     userId = currentUser.id,
                     date = today,
                     status = "Hadir",
-                    timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    timestamp = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                         .format(Date()),
-                    location = binding.inputNisn.text.toString(),
-                    mood = binding.inputNis.text.toString()
+                    location = binding.inputLocation.text.toString(),
+                    mood = mood,
+                    reason = reason
                 )
 
                 if (dbHelper.insertPresence(presence) > 0) {

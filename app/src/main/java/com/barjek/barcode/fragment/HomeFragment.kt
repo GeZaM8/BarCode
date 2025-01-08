@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.barjek.barcode.R
+import com.barjek.barcode.adapter.HistoryAdapter
+import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.FragmentHomeBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +30,7 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var db: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,11 @@ class HomeFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        db = DatabaseHelper(requireContext())
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+
+        binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerHistory.adapter = HistoryAdapter(db.getAllPresence())
     }
 
     override fun onCreateView(
@@ -41,7 +50,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -23,16 +23,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.9"/>
 
-    <ImageButton
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/baseline_arrow_back_ios_new_24"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"

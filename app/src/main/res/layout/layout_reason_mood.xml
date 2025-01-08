@@ -27,6 +27,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_weight="0"
+                android:contentDescription="@null"
                 app:srcCompat="@drawable/smile" />
 
             <TextView
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/btnKirim"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout1">
@@ -65,7 +66,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnKirim"
             style="@style/buttonBiasa"
             android:layout_width="78dp"
             android:layout_height="28dp"

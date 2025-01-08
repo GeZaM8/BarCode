@@ -66,10 +66,6 @@ class ProfileFragment : Fragment() {
             binding.tvNIS.text = it.nis
         }
 
-        binding.btnBack.setOnClickListener {
-
-        }
-
         binding.detailProfile.setOnClickListener {
             val intent = Intent(view.context, EditProfileActivity::class.java)
             (view.context as Activity).startActivity(intent)

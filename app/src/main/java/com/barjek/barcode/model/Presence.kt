@@ -7,5 +7,6 @@ data class Presence(
     val status: String = "",
     val timestamp: String = "",
     val location: String = "",
-    val mood: String = ""
+    val mood: String = "",
+    val reason: String = ""
 )

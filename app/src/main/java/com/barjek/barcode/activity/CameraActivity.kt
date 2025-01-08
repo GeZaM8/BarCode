@@ -6,18 +6,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import android.util.Size
-import android.widget.Toast
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.annotation.OptIn
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -28,29 +25,33 @@ import androidx.camera.core.Preview
 import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.barjek.barcode.R
+import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.ActivityCameraBinding
 import com.barjek.barcode.databinding.LayoutChooseMoodBinding
 import com.barjek.barcode.databinding.LayoutReasonMoodBinding
 import com.barjek.barcode.geofence.GeofenceHelper
+import com.barjek.barcode.model.Presence
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
+    private lateinit var db: DatabaseHelper
     private lateinit var cameraExecuter: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
     private lateinit var absensi: AlertDialog.Builder
@@ -67,6 +68,9 @@ class CameraActivity : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        db = DatabaseHelper(this)
+
+        binding.btnBack.setOnClickListener { finish() }
 
         cameraExecuter = Executors.newSingleThreadExecutor()
         barcodeScanner = BarcodeScanning.getClient()
@@ -121,6 +125,7 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         }
+
 
         val intentFilter = IntentFilter("com.barjek.LOCAL_GEOFENCE_EVENT")
         LocalBroadcastManager.getInstance(this).registerReceiver(geofenceReceiver, intentFilter)
@@ -206,39 +211,8 @@ class CameraActivity : AppCompatActivity() {
     @SuppressLint("InflateParams")
     private fun handleBarcode(barcode: Barcode) {
         val url = barcode.url?.url ?: barcode.displayValue
-//        if (url != null) {
-            val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
-            val bindingView = LayoutChooseMoodBinding.bind(costumLayout)
-
-            absensi.setView(costumLayout)
-            absensi.show()
-//            Log.d("Code", "Terdetekso")
-            isScanned = true
-
-            bindingView.smile.setOnClickListener {
-                val costumLayout1 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
-                val bindingView1 = LayoutReasonMoodBinding.bind(costumLayout1)
-                absensi.setView(costumLayout1)
-                bindingView1.mood.setImageResource(R.drawable.smile)
-                bindingView1.textView1.setText(R.string.baik)
-                absensi.show()
-            }
-            bindingView.neutral.setOnClickListener {
-                val costumLayout2 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
-                val bindingView2 = LayoutReasonMoodBinding.bind(costumLayout2)
-                absensi.setView(costumLayout2)
-                bindingView2.mood.setImageResource(R.drawable.neutral)
-                bindingView2.textView1.setText(R.string.biasa)
-                absensi.show()
-            }
-            bindingView.frown.setOnClickListener {
-                val costumLayout3 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
-                val bindingView3 = LayoutReasonMoodBinding.bind(costumLayout3)
-                absensi.setView(costumLayout3)
-                bindingView3.mood.setImageResource(R.drawable.frown)
-                bindingView3.textView1.setText(R.string.buruk)
-                absensi.show()
-            }
+        if (url != null) {
+            absensi()
 
 //            binding.textResult.text = url
 //            binding.textResult.setOnClickListener {
@@ -255,7 +229,64 @@ class CameraActivity : AppCompatActivity() {
 //                }
 //                Open.show()
 //            }
-//        }
+        }
+    }
+
+    private fun absensi() {
+        val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
+        val bindingView = LayoutChooseMoodBinding.bind(costumLayout)
+
+        absensi.setView(costumLayout)
+        absensi.setCancelable(false)
+        absensi.show()
+//            Log.d("Code", "Terdetekso")
+        isScanned = true
+
+        bindingView.smile.setOnClickListener {
+            val costumLayout1 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+            val bindingView1 = LayoutReasonMoodBinding.bind(costumLayout1)
+            absensiLayout(bindingView1, costumLayout1, R.drawable.smile)
+        }
+        bindingView.neutral.setOnClickListener {
+            val costumLayout2 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+            val bindingView2 = LayoutReasonMoodBinding.bind(costumLayout2)
+            absensiLayout(bindingView2, costumLayout2, R.drawable.neutral)
+        }
+        bindingView.frown.setOnClickListener {
+            val costumLayout3 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
+            val bindingView3 = LayoutReasonMoodBinding.bind(costumLayout3)
+            absensiLayout(bindingView3, costumLayout3, R.drawable.frown)
+        }
+    }
+
+    private fun absensiLayout(bindingView: LayoutReasonMoodBinding, customLayout: View, drawableMood: Int) {
+        absensi.setView(customLayout)
+        val mood = when(drawableMood) {
+            R.drawable.smile -> "Happy"
+            R.drawable.neutral -> "Neutral"
+            R.drawable.frown -> "Frown"
+            else -> "Neutral"
+        }
+        bindingView.mood.setImageResource(drawableMood)
+        bindingView.textView1.setText(R.string.baik)
+        absensi.show()
+        bindingView.btnKirim.setOnClickListener {
+//            val presence = Presence(
+//                userId = "1",
+//                date = "Senin-08=01-2025",
+//                status = "tes",
+//                timestamp = "06:29",
+//                location = "SMKN24",
+//                mood = "Happy"
+//            )
+//            db.insertPresence(presence)
+            val intent = Intent(this, ConfirmPresentActivity::class.java).apply {
+                putExtra("mood", mood)
+                putExtra("reason", bindingView.inputReason.text)
+            }
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onDestroy() {
@@ -272,5 +303,10 @@ class CameraActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+
     }
 }

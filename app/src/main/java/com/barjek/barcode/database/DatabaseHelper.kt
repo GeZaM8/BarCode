@@ -32,6 +32,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_TIMESTAMP = "timestamp"
         private const val COLUMN_LOCATION = "location"
         private const val COLUMN_MOOD = "mood"
+        private const val COLUMN_REASON = "reason"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -59,6 +60,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 $COLUMN_TIMESTAMP TEXT,
                 $COLUMN_LOCATION TEXT,
                 $COLUMN_MOOD TEXT,
+                $COLUMN_REASON TEXT,
                 FOREIGN KEY($COLUMN_USER_ID) REFERENCES $TABLE_USER($COLUMN_ID)
             )
         """.trimIndent()
@@ -68,7 +70,48 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USER")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_HADIR")
         onCreate(db)
+    }
+
+//    fun deleteAllData() {
+//        val db = this.writableDatabase
+//        db.execSQL("DELETE FROM $TABLE_HADIR")
+//        db.close()
+//    }
+
+    fun getAllPresence(): List<Presence> {
+        val db = this.writableDatabase
+        val query = "SELECT * FROM $TABLE_HADIR"
+        val cursor = db.rawQuery(query, null)
+        val listPresence = mutableListOf<Presence>()
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HADIR_ID))
+            val userId = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USER_ID))
+            val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+            val status = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STATUS))
+            val timestamp = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIMESTAMP))
+            val location = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LOCATION))
+            val mood = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MOOD))
+//            val reason = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_REASON))
+
+            val presance = Presence(
+                hadirId = id,
+                userId = userId,
+                date = date,
+                location = location,
+                status = status,
+                timestamp = timestamp,
+                mood = mood,
+//                reason = reason
+            )
+            listPresence.add(presance)
+        }
+        cursor.close()
+        db.close()
+
+        return listPresence
     }
 
     fun insertUser(user: User): Long {
@@ -189,6 +232,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_TIMESTAMP, presence.timestamp)
             put(COLUMN_LOCATION, presence.location)
             put(COLUMN_MOOD, presence.mood)
+            put(COLUMN_REASON, presence.reason)
         }
         return db.insert(TABLE_HADIR, null, values)
     }

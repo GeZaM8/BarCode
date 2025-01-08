@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
+import com.barjek.barcode.activity.CameraActivity
 import com.barjek.barcode.activity.HomePageActivity
 import com.barjek.barcode.activity.LoginActivity
 import com.barjek.barcode.activity.NoInsideActivity
@@ -25,6 +27,8 @@ class SplashScreen : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
     private lateinit var dbHelper: DatabaseHelper
 
+    private var isActivityStarted = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         dbHelper = DatabaseHelper(this)
@@ -33,33 +37,63 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
-//        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
-//
-//        val login = getSharedPreferences("UserPref", MODE_PRIVATE)
-//        val email = login.getString("EMAIL", "") ?: ""
-//
-//        val user = dbHelper.getUserByEmail(email) ?: User()
-//
-//        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-//
-//        val intent = when(isFirstRun) {
-//            true -> {
-//                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
-//                Intent(this, StartActivity::class.java)
-//            }
-//            else -> {
-//                if (user.id.isBlank()) {
-//                    Intent(this, LoginActivity::class.java)
-//                } else {
-//                    if (dbHelper.checkTodayPresence(user.id, today)) Intent(this, HomePageActivity::class.java)
-//                    else Intent(this, NoInsideActivity::class.java)
-//                }
-//            }
-//        }
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            startActivity(intent)
-//            finish()
-//        }, 3000L)
+        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+
+        val login = getSharedPreferences("UserPref", MODE_PRIVATE)
+        val email = login.getString("EMAIL", "") ?: ""
+
+        val user = dbHelper.getUserByEmail(email) ?: User()
+
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        var intent = when(isFirstRun) {
+            true -> {
+                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
+                Intent(this, StartActivity::class.java)
+            }
+            else -> {
+                if (user.id.isBlank()) {
+                    Intent(this, LoginActivity::class.java)
+                } else {
+//                    if (dbHelper.checkTodayPresence(user.id, today))
+                        Intent(this, HomePageActivity::class.java)
+//                    else Intent(this, CameraActivity::class.java)
+                }
+            }
+        }
+
+        binding.main.setTransitionListener(object: MotionLayout.TransitionListener {
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {}
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {}
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (!isActivityStarted) {
+                    isActivityStarted = true
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startActivity(intent)
+                        finish()
+                    }, 3000L)
+                }
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {}
+
+        })
     }
 }
