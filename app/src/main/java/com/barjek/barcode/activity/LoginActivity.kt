@@ -2,10 +2,17 @@ package com.barjek.barcode.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.ActivityLoginBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -18,43 +25,85 @@ class LoginActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
+        lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                val req = APIRequest("woi").execute()
+                Log.d("DATA TEST", req.data)
+            }
+        }
+
         binding.btnLogin.setOnClickListener {
             val email = binding.inputEmail.text.toString()
             val password = binding.inputPassword.text.toString()
 
-            when {
-                email.isEmpty() -> {
-                    binding.inputEmail.error = "Email tidak boleh kosong"
-                }
-                !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                    binding.inputEmail.error = "Format email tidak valid"
-                }
-                password.isEmpty() -> {
-                    binding.inputPassword.error = "Password tidak boleh kosong"
-                }
-                else -> {
-                    if (dbHelper.checkUser(email, password)) {
-                        val user = dbHelper.getUserByEmail(email)
-                        if (user != null) {
+            val dataPost = JSONObject().apply {
+                put("email", email)
+                put("password", password)
+            }
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    val req = APIRequest(
+                        url = "login",
+                        method = "POST",
+                        data = dataPost.toString()
+                    ).execute()
+
+                    withContext(Dispatchers.Main) {
+                        if (req.code in 200 until 300) {
+                            val data = JSONObject(req.data)
                             val sharedPref = getSharedPreferences("UserPref", MODE_PRIVATE)
                             with(sharedPref.edit()) {
-                                putString("USER_ID", user.id)
-                                putString("EMAIL", user.email)
-                                putString("NAMA", user.nama)
-                                putString("KELAS", user.kelas)
+                                putString("USER_ID", data.getString("id_user"))
+                                putString("EMAIL", data.getString("email"))
+                                putString("NAMA", data.getString("nama"))
                                 apply()
                             }
-
-                            Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, HomePageActivity::class.java)
+                            Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@LoginActivity, HomePageActivity::class.java)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                             finish()
+                        } else {
+                            Toast.makeText(this@LoginActivity, req.data, Toast.LENGTH_SHORT).show()
+//                            Log.d("Salah", req.data)
                         }
-                    } else {
-                        Toast.makeText(this, "Email atau password salah", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+
+//            when {
+//                email.isEmpty() -> {
+//                    binding.inputEmail.error = "Email tidak boleh kosong"
+//                }
+//                !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+//                    binding.inputEmail.error = "Format email tidak valid"
+//                }
+//                password.isEmpty() -> {
+//                    binding.inputPassword.error = "Password tidak boleh kosong"
+//                }
+//                else -> {
+//                    if (dbHelper.checkUser(email, password)) {
+//                        val user = dbHelper.getUserByEmail(email)
+//                        if (user != null) {
+//                            val sharedPref = getSharedPreferences("UserPref", MODE_PRIVATE)
+////                            with(sharedPref.edit()) {
+////                                putString("USER_ID", user.id)
+////                                putString("EMAIL", user.email)
+////                                putString("NAMA", user.nama)
+////                                putString("KELAS", user.kelas)
+////                                apply()
+////                            }
+//
+//                            Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
+//                            startActivity(Intent(this, HomePageActivity::class.java)
+//                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+//                            finish()
+//                        }
+//                    } else {
+//                        Toast.makeText(this, "Email atau password salah", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
         }
 
         binding.hrefRegister.setOnClickListener {

@@ -4,15 +4,22 @@ import android.graphics.Paint
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.barjek.barcode.R
 import com.barjek.barcode.adapter.HistoryAdapter
+import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +49,18 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerHistory.adapter = HistoryAdapter(db.getAllPresence())
+//        binding.recyclerHistory.adapter = HistoryAdapter(db.getAllPresence())
+        val sharedPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
+        val id = sharedPref.getString("USER_ID", "0")
+        Log.d("ID", id.toString())
+
+        lifecycleScope.launch {
+            val req = APIRequest("absensi/$id").execute()
+            val data = JSONArray(req.data)
+
+            binding.recyclerHistory.adapter = HistoryAdapter(data)
+
+        }
     }
 
     override fun onCreateView(
