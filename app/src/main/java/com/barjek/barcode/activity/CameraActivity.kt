@@ -11,9 +11,9 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Size
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.DrawableRes
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,14 +26,15 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.barjek.barcode.R
+import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.ActivityCameraBinding
 import com.barjek.barcode.databinding.LayoutChooseMoodBinding
 import com.barjek.barcode.databinding.LayoutReasonMoodBinding
 import com.barjek.barcode.geofence.GeofenceHelper
-import com.barjek.barcode.model.Presence
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -42,10 +43,10 @@ import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -55,6 +56,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var cameraExecuter: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
     private lateinit var absensi: AlertDialog.Builder
+    private var dataQr: String? = null
 
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var geofenceReceiver: BroadcastReceiver
@@ -210,25 +212,28 @@ class CameraActivity : AppCompatActivity() {
 
     @SuppressLint("InflateParams")
     private fun handleBarcode(barcode: Barcode) {
-        val url = barcode.url?.url ?: barcode.displayValue
-        if (url != null) {
-            absensi()
+        dataQr = barcode.url?.url ?: barcode.displayValue
+        if (dataQr != null) {
+//            Log.d("Data QRCODE", dataQr)
+            val dataQrJSON = JSONObject().apply {
+                put("qrcode", dataQr)
+            }
 
-//            binding.textResult.text = url
-//            binding.textResult.setOnClickListener {
-//                val Open = AlertDialog.Builder(this)
-//                Open.setMessage("Want to open here?")
-//                Open.setNegativeButton("No") {dialog, _ ->
-//                    val open = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-//                    startActivity(open)
-//                }
-//                Open.setPositiveButton("Yes") { dialog, _ ->
-//                    val intent = Intent(this, WebViewActivity::class.java)
-//                    intent.putExtra("url", url)
-//                    startActivity(intent)
-//                }
-//                Open.show()
-//            }
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    val req = APIRequest("validate/qrcode", "POST", dataQrJSON.toString()).execute()
+
+                    withContext(Dispatchers.Main) {
+                        if (req.code in 200 until 300) {
+                            absensi()
+                        } else {
+                            val jsonResponse = JSONObject(req.data)
+                            val messages = jsonResponse.getJSONObject("messages").getString("error")
+                            Toast.makeText(this@CameraActivity, messages, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -239,7 +244,6 @@ class CameraActivity : AppCompatActivity() {
         absensi.setView(costumLayout)
         absensi.setCancelable(false)
         absensi.show()
-//            Log.d("Code", "Terdetekso")
         isScanned = true
 
         bindingView.smile.setOnClickListener {
@@ -261,28 +265,21 @@ class CameraActivity : AppCompatActivity() {
 
     private fun absensiLayout(bindingView: LayoutReasonMoodBinding, customLayout: View, drawableMood: Int) {
         absensi.setView(customLayout)
-        val mood = when(drawableMood) {
-            R.drawable.smile -> "Happy"
-            R.drawable.neutral -> "Neutral"
-            R.drawable.frown -> "Frown"
-            else -> "Neutral"
+        val (mood, text) = when (drawableMood) {
+            R.drawable.smile -> "Happy" to R.string.baik
+            R.drawable.neutral -> "Neutral" to R.string.biasa
+            R.drawable.frown -> "Frown" to R.string.buruk
+            else -> "Neutral" to R.string.biasa
         }
+
         bindingView.mood.setImageResource(drawableMood)
-        bindingView.textView1.setText(R.string.baik)
+        bindingView.textView1.setText(text)
         absensi.show()
         bindingView.btnKirim.setOnClickListener {
-//            val presence = Presence(
-//                userId = "1",
-//                date = "Senin-08=01-2025",
-//                status = "tes",
-//                timestamp = "06:29",
-//                location = "SMKN24",
-//                mood = "Happy"
-//            )
-//            db.insertPresence(presence)
             val intent = Intent(this, ConfirmPresentActivity::class.java).apply {
                 putExtra("mood", mood)
                 putExtra("reason", bindingView.inputReason.text)
+                putExtra("qrcode", dataQr)
             }
             startActivity(intent)
             finish()
@@ -303,10 +300,5 @@ class CameraActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-    }
-
-    override fun onBackPressed() {
-//        super.onBackPressed()
-
     }
 }

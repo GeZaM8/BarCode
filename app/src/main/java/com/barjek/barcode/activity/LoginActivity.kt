@@ -57,6 +57,15 @@ class LoginActivity : AppCompatActivity() {
                                 putString("USER_ID", data.getString("id_user"))
                                 putString("EMAIL", data.getString("email"))
                                 putString("NAMA", data.getString("nama"))
+                                putString("KELAS", data.getString("kelas"))
+                                putString("NISN", data.getString("nisn"))
+                                putString("NIS", data.getString("nis"))
+                                putString("JURUSAN", data.getString("nama_jurusan"))
+                                putString("ABSEN", data.getString("absen"))
+
+                                putString("ABSEN", data.getString("absen"))
+                                putString("ABSEN", data.getString("absen"))
+                                putString("ABSEN", data.getString("absen"))
                                 apply()
                             }
                             Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()

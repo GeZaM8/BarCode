@@ -23,8 +23,7 @@ import org.json.JSONObject
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = ""
 
 /**
  * A simple [Fragment] subclass.
@@ -34,7 +33,6 @@ private const val ARG_PARAM2 = "param2"
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var db: DatabaseHelper
@@ -43,23 +41,19 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
         db = DatabaseHelper(requireContext())
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
-//        binding.recyclerHistory.adapter = HistoryAdapter(db.getAllPresence())
         val sharedPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
         val id = sharedPref.getString("USER_ID", "0")
-        Log.d("ID", id.toString())
 
         lifecycleScope.launch {
             val req = APIRequest("absensi/$id").execute()
             val data = JSONArray(req.data)
 
             binding.recyclerHistory.adapter = HistoryAdapter(data)
-
         }
     }
 
@@ -82,11 +76,10 @@ class HomeFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

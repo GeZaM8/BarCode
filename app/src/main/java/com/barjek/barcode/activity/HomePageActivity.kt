@@ -19,11 +19,14 @@ import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
 class HomePageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomePageBinding
+
+    private var sdf = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
     private lateinit var connectivityManager: ConnectivityManager
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -56,11 +59,7 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-//        val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+7"))
-//        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-//        dateFormat.timeZone = TimeZone.getTimeZone("GMT+7")
-//        val date = dateFormat.format(calendar.time)
-//        Log.d("tanggalllllll", "$date")
+        var timestamp = sdf.format(Date())
 
         connectivityManager = getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         connectivityManager.requestNetwork(networkRequest, networkCallback)
@@ -71,7 +70,6 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         replaceFragment(HomeFragment())
-
         binding.btnNavbar.setOnItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.home -> replaceFragment(HomeFragment())
@@ -83,6 +81,7 @@ class HomePageActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
         binding.btnCamera.setOnClickListener {
+            timestamp = sdf.format(Date())
             val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }

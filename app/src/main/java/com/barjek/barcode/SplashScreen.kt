@@ -41,19 +41,17 @@ class SplashScreen : AppCompatActivity() {
         val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
 
         val login = getSharedPreferences("UserPref", MODE_PRIVATE)
-        val email = login.getString("EMAIL", "") ?: ""
-
-        val user = dbHelper.getUserByEmail(email) ?: User()
+        val id = login.getString("USER_ID", "0")
 
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        var intent = when(isFirstRun) {
+        val intent = when(isFirstRun) {
             true -> {
                 sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
                 Intent(this, StartActivity::class.java)
             }
             else -> {
-                if (user.id.isBlank()) {
+                if (id.isNullOrBlank()) {
                     Intent(this, LoginActivity::class.java)
                 } else {
 //                    if (dbHelper.checkTodayPresence(user.id, today))
