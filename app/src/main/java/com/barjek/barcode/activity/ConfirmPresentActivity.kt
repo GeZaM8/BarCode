@@ -81,13 +81,13 @@ class ConfirmPresentActivity : AppCompatActivity() {
                     val responseJSON = JSONObject(req.data)
                     withContext(Dispatchers.Main) {
                         if (req.code in 200 until 300) {
-//                            val message = responseJSON.getString("messages")
-                            Toast.makeText(this@ConfirmPresentActivity, "berhasil", Toast.LENGTH_SHORT).show()
+                            val message = responseJSON.getString("messages")
+                            Toast.makeText(this@ConfirmPresentActivity, message, Toast.LENGTH_SHORT).show()
                             finish()
                         } else {
-//                            val errorMessage = responseJSON.getJSONObject("messages").getString("error")
+                            val errorMessage = responseJSON.getJSONObject("messages").getString("error")
                             Log.d("RESPONSEJSON", responseJSON.toString())
-                            Toast.makeText(this@ConfirmPresentActivity, "gagal", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@ConfirmPresentActivity, errorMessage, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

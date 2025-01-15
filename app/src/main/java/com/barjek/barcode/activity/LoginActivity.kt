@@ -61,11 +61,11 @@ class LoginActivity : AppCompatActivity() {
                                 putString("NISN", data.getString("nisn"))
                                 putString("NIS", data.getString("nis"))
                                 putString("JURUSAN", data.getString("nama_jurusan"))
-                                putString("ABSEN", data.getString("absen"))
-
-                                putString("ABSEN", data.getString("absen"))
-                                putString("ABSEN", data.getString("absen"))
-                                putString("ABSEN", data.getString("absen"))
+//                                putString("ABSEN", data.getString("absen"))
+//
+//                                putString("ABSEN", data.getString("absen"))
+//                                putString("ABSEN", data.getString("absen"))
+//                                putString("ABSEN", data.getString("absen"))
                                 apply()
                             }
                             Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
