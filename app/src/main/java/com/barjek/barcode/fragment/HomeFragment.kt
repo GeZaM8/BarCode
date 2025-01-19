@@ -42,6 +42,12 @@ class HomeFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         db = DatabaseHelper(requireContext())
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
@@ -55,12 +61,7 @@ class HomeFragment : Fragment() {
 
             binding.recyclerHistory.adapter = HistoryAdapter(data)
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
         // Inflate the layout for this fragment
         return binding.root
     }

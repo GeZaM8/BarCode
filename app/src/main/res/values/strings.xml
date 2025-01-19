@@ -28,4 +28,5 @@
     <string name="kelas">Kelas</string>
     <string name="absen">Absen</string>
     <string name="jurusan">Jurusan</string>
+    <string name="update">Update</string>
 </resources>

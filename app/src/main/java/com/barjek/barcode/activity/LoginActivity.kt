@@ -16,21 +16,11 @@ import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        dbHelper = DatabaseHelper(this)
-
-        lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                val req = APIRequest("woi").execute()
-                Log.d("DATA TEST", req.data)
-            }
-        }
 
         binding.btnLogin.setOnClickListener {
             val email = binding.inputEmail.text.toString()
@@ -48,33 +38,29 @@ class LoginActivity : AppCompatActivity() {
                         method = "POST",
                         data = dataPost.toString()
                     ).execute()
+                    val response = JSONObject(req.data)
 
                     withContext(Dispatchers.Main) {
                         if (req.code in 200 until 300) {
-                            val data = JSONObject(req.data)
                             val sharedPref = getSharedPreferences("UserPref", MODE_PRIVATE)
                             with(sharedPref.edit()) {
-                                putString("USER_ID", data.getString("id_user"))
-                                putString("EMAIL", data.getString("email"))
-                                putString("NAMA", data.getString("nama"))
-                                putString("KELAS", data.getString("kelas"))
-                                putString("NISN", data.getString("nisn"))
-                                putString("NIS", data.getString("nis"))
-                                putString("JURUSAN", data.getString("nama_jurusan"))
-//                                putString("ABSEN", data.getString("absen"))
-//
-//                                putString("ABSEN", data.getString("absen"))
-//                                putString("ABSEN", data.getString("absen"))
-//                                putString("ABSEN", data.getString("absen"))
+                                putString("USER_ID", response.getString("id_user"))
+                                putString("EMAIL", response.getString("email"))
+                                putString("NAMA", response.getString("nama"))
+                                putString("KELAS", response.getString("kelas"))
+                                putString("NISN", response.getString("nisn"))
+                                putString("NIS", response.getString("nis"))
+                                putString("JURUSAN", response.getString("kode_jurusan"))
+                                putString("ABSEN", response.getString("no_absen"))
                                 apply()
                             }
+                            Log.d("ID Login", response.getString("id_user"))
                             Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@LoginActivity, HomePageActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                            startActivity(Intent(this@LoginActivity, HomePageActivity::class.java))
                             finish()
                         } else {
-                            Toast.makeText(this@LoginActivity, req.data, Toast.LENGTH_SHORT).show()
-//                            Log.d("Salah", req.data)
+                            Log.d("Salah", "$response")
+                            Toast.makeText(this@LoginActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

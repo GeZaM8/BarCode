@@ -2,7 +2,6 @@ package com.barjek.barcode.api
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.barjek.barcode.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,26 +16,29 @@ class APIRequest(
     private val method: String = "GET",
     private val data: String? = null
 ) {
-    private var conn = URL("https://backend24.site/Rian/XI/barcode/$url").openConnection() as HttpURLConnection
+    private val base_url = "http://10.0.2.2:8080"
+    private var conn = URL("$base_url/$url").openConnection() as HttpURLConnection
 
     init {
         conn.requestMethod = method
         conn.setRequestProperty("Content-Type", "application/json")
 
         val apiKey = BuildConfig.API_KEY
-        conn.setRequestProperty("API-KEy", apiKey)
+        conn.setRequestProperty("API-KEY", apiKey)
 
-        if (method == "POST" && data != null) {
-            conn.doOutput = true
-            val writer = OutputStreamWriter(conn.outputStream)
-            writer.write(data)
-            writer.flush()
+        if (method == "POST" || method == "PATCH") {
+            if (data != null) {
+                conn.doOutput = true
+                val writer = OutputStreamWriter(conn.outputStream)
+                writer.write(data)
+                writer.flush()
+            }
         }
     }
 
     suspend fun execute(): APIResponse {
         return withContext(Dispatchers.IO) {
-            val reader = when (conn.responseCode){
+            val reader = when (conn.responseCode) {
                 in 200 until 300 -> BufferedReader(InputStreamReader(conn.inputStream))
                 else -> BufferedReader(InputStreamReader(conn.errorStream))
             }

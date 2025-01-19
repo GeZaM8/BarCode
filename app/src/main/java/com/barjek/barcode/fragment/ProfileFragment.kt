@@ -2,8 +2,11 @@ package com.barjek.barcode.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,36 +49,35 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        dbHelper = DatabaseHelper(view.context)
+        val userPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
+        val nama = userPref.getString("NAMA", "")
+        val absen = userPref.getString("ABSEN", "")
+        val kelas = userPref.getString("KELAS", "")
+        val nisn = userPref.getString("NISN", "")
+        val nis = userPref.getString("NIS", "")
 
-        val sharedPref = view.context.getSharedPreferences("UserPref", Context.MODE_PRIVATE)
-        val userEmail = sharedPref.getString("email", "") ?: ""
-
-        val user = dbHelper.getUserByEmail(userEmail)
-
-        user?.let {
-            binding.tvName.text = it.nama
-            binding.tvClass.text = "${it.kelas} ${it.jurusan}"
-            binding.tvNISN.text = it.nisn
-            binding.tvNIS.text = it.nis
+        binding.apply {
+            tvName.text = nama
+            tvAbsen.text = absen
+            tvClass.text = kelas
+            tvNISN.text = nisn
+            tvNIS.text = nis
         }
 
         binding.detailProfile.setOnClickListener {
-            val intent = Intent(view.context, EditProfileActivity::class.java)
-            (view.context as Activity).startActivity(intent)
+            val intent = Intent(requireActivity(), EditProfileActivity::class.java)
+            requireActivity().startActivity(intent)
         }
 
-        binding.btnLogout.setOnClickListener {
-            sharedPref.edit().clear().apply()
-            startActivity(Intent(view.context, LoginActivity::class.java))
-            finishAffinity(view.context as Activity)
-        }
+//        binding.btnLogout.setOnClickListener {
+//            sharedPref.edit().clear().apply()
+//            startActivity(Intent(view.context, LoginActivity::class.java))
+//            finishAffinity(view.context as Activity)
+//        }
+
+        // Inflate the layout for this fragment
+        return binding.root
     }
 
     companion object {

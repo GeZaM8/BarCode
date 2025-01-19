@@ -37,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
                     val intent = Intent(this, RegisterProfileActivity::class.java).apply {
                         putExtra("EMAIL", email)
                         putExtra("PASSWORD", password)
-                        putExtra("USER_ID", UUID.randomUUID().toString())
                     }
                     startActivity(intent)
                 }
