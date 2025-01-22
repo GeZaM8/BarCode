@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
 
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
         val sharedPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
-        val id = sharedPref.getString("USER_ID", "0")
+        val id = sharedPref.getString("ID_USER", "0")
 
         lifecycleScope.launch {
             val req = APIRequest("absensi/$id").execute()

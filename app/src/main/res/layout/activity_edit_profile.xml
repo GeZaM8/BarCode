@@ -35,9 +35,9 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <ImageView
+            android:id="@+id/inputPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="23dp"
             android:src="@drawable/baseline_person_24" />
     </androidx.cardview.widget.CardView>
 
@@ -94,19 +94,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nama_panjang"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputNama"
@@ -123,19 +123,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/absen"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputAbsen"
@@ -152,19 +152,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/kelas"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputKelas"
@@ -181,19 +181,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nis"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputNis"
@@ -210,19 +210,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/nisn"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputNisn"
@@ -239,19 +239,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
             app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="8dp"
-            app:cardCornerRadius="8dp">
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 app:boxBackgroundColor="@color/white"
-                app:boxStrokeWidth="0dp"
-                app:boxCornerRadiusTopStart="8dp"
-                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
-                app:boxCornerRadiusBottomEnd="8dp">
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxStrokeWidth="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputEmail"

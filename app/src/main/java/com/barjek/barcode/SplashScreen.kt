@@ -41,7 +41,7 @@ class SplashScreen : AppCompatActivity() {
         val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
 
         val login = getSharedPreferences("UserPref", MODE_PRIVATE)
-        val id = login.getString("USER_ID", "")
+        val id = login.getString("ID_USER", "")
 
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 

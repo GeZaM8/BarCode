@@ -1,10 +1,17 @@
 package com.barjek.barcode.activity
 
+import android.Manifest
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -12,35 +19,80 @@ import androidx.lifecycle.lifecycleScope
 import com.barjek.barcode.R
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.databinding.ActivityEditProfileBinding
+import com.barjek.barcode.geofence.GeofenceHelper
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
+
+    private lateinit var photoName: String
+
+    val cropImageLauncher = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            val uri: Uri? = result.uriContent
+            photoName = uri?.lastPathSegment.toString()
+            Picasso.get().load(uri).into(binding.inputPhoto)
+        } else {
+            val error = result.error
+            error?.printStackTrace()
+        }
+    }
+
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userPref = getSharedPreferences("UserPref", MODE_PRIVATE)
-        val id_user = userPref.getString("USER_ID", "")
-        val nama = userPref.getString("NAMA", "")
-        val absen = userPref.getString("ABSEN", "")
-        val kelas = userPref.getString("KELAS", "")
-        val nisn = userPref.getString("NISN", "")
-        val nis = userPref.getString("NIS", "")
-        val email = userPref.getString("EMAIL", "")
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions())
+        { permissions ->
+            val cameraGranted = permissions[Manifest.permission.CAMERA] ?: false
+            val storageGranted = permissions[Manifest.permission.CAMERA] ?: false
 
-        binding.apply {
-            inputNama.setText(nama)
-            inputAbsen.setText(absen)
-            inputKelas.setText(kelas)
-            inputNisn.setText(nisn)
-            inputNis.setText(nis)
-            inputEmail.setText(email)
+            if (cameraGranted && storageGranted) pickFromGallery()
+        }
+
+        binding.inputPhoto.setOnClickListener {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+            )
+        }
+
+        val userPref = getSharedPreferences("UserPref", MODE_PRIVATE)
+        val id_user = userPref.getString("ID_USER", "")
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val req = APIRequest("siswa/$id_user", "GET").execute()
+
+                withContext(Dispatchers.Main) {
+                    if (req.code in 200 until 300) {
+                        val siswa = JSONObject(req.data)
+
+                        binding.apply {
+                            inputNama.setText(siswa.getString("nama"))
+                            inputAbsen.setText(siswa.getString("no_absen"))
+                            inputKelas.setText(siswa.getString("kelas"))
+                            inputNisn.setText(siswa.getString("nisn"))
+                            inputNis.setText(siswa.getString("nis"))
+                            inputEmail.setText(siswa.getString("email"))
+                        }
+                    }
+                }
+            }
         }
 
         binding.btnUpdate.setOnClickListener {
@@ -58,12 +110,19 @@ class EditProfileActivity : AppCompatActivity() {
                 put("nis", nis_update)
                 put("nisn", nisn_update)
                 put("email", email_update)
+                put("foto", photoName)
             }
+
+            val bitmap = (binding.inputPhoto.drawable as BitmapDrawable).bitmap
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val photoDataByte = byteArrayOutputStream.toByteArray()
 
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    Log.d("DATA EDIT PROFILE", data.toString())
-                    val req = APIRequest("update/siswa", "PATCH", data.toString()).execute()
+                    Log.d("DATA EDIT PROFILE", "${data}, image: $photoDataByte")
+                    val req = APIRequest("update/siswa", "POST", data.toString(), photoDataByte).execute()
+                    Log.d("DATA REQ EDIT", req.data)
                     val response = JSONObject(req.data)
 
                     withContext(Dispatchers.Main) {
@@ -72,11 +131,20 @@ class EditProfileActivity : AppCompatActivity() {
                             finish()
                         } else {
                             Log.d("ERROR EDIT PROFILE", response.toString())
-                            Toast.makeText(this@EditProfileActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditProfileActivity, "Gagal Update Profile", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun pickFromGallery() {
+        val cropImageOptions = CropImageOptions().apply {
+            aspectRatioX = 1
+            aspectRatioY = 1
+            fixAspectRatio = true
+        }
+        cropImageLauncher.launch(CropImageContractOptions(null, cropImageOptions))
     }
 }

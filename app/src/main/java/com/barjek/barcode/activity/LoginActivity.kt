@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
@@ -44,20 +45,13 @@ class LoginActivity : AppCompatActivity() {
                         if (req.code in 200 until 300) {
                             val sharedPref = getSharedPreferences("UserPref", MODE_PRIVATE)
                             with(sharedPref.edit()) {
-                                putString("USER_ID", response.getString("id_user"))
-                                putString("EMAIL", response.getString("email"))
-                                putString("NAMA", response.getString("nama"))
-                                putString("KELAS", response.getString("kelas"))
-                                putString("NISN", response.getString("nisn"))
-                                putString("NIS", response.getString("nis"))
-                                putString("JURUSAN", response.getString("kode_jurusan"))
-                                putString("ABSEN", response.getString("no_absen"))
+                                putString("ID_USER", response.getString("id_user"))
                                 apply()
                             }
                             Log.d("ID Login", response.getString("id_user"))
                             Toast.makeText(this@LoginActivity, "Login berhasil", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginActivity, HomePageActivity::class.java))
-                            finish()
+                            finishAffinity()
                         } else {
                             Log.d("Salah", "$response")
                             Toast.makeText(this@LoginActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
