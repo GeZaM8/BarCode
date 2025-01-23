@@ -65,7 +65,7 @@ class ConfirmPresentActivity : AppCompatActivity() {
                         binding.apply {
                             inputNama.setText(siswa.getString("nama"))
                             inputAbsen.setText(siswa.getString("no_absen"))
-                            inputKelas.setText(siswa.getString("kelas"))
+                            inputKelas.setText(siswa.getString("id_kelas"))
                             inputJurusan.setText(siswa.getString("kode_jurusan"))
                             inputKelas.isEnabled = false
                             inputJurusan.isEnabled = false
