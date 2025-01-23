@@ -97,6 +97,7 @@ class ProfileFragment : Fragment() {
                         }
                     } else {
                         userPref.edit().clear().apply()
+                        Log.d("PROFILE", req.data)
                         startActivity(Intent(requireActivity(), LoginActivity::class.java))
                         requireActivity().finish()
                     }

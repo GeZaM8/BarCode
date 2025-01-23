@@ -39,11 +39,7 @@ class ConfirmPresentActivity : AppCompatActivity() {
         binding.inputMood.hint = mood
 
         val sharedPref = getSharedPreferences("UserPref", Context.MODE_PRIVATE)
-        val id = sharedPref.getString("USER_ID", "0")
-        val nama = sharedPref.getString("NAMA", "")
-        val absen = sharedPref.getString("ABSEN", "0")
-        val kelas = sharedPref.getString("KELAS", "0")
-        val jurusan = sharedPref.getString("JURUSAN", "")
+        val id = sharedPref.getString("ID_USER", "0")
 
         val calendar = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 6)
@@ -55,15 +51,28 @@ class ConfirmPresentActivity : AppCompatActivity() {
         Log.d("WAKTU", "Sekarang: $waktuSekarang, Akhir: $waktuAkhir")
 
         val status = if (waktuSekarang > waktuAkhir) "Terlambat" else "Hadir"
+        val userPref = getSharedPreferences("UserPref", MODE_PRIVATE)
+        val id_user = userPref.getString("ID_USER", "")
 
-        binding.apply {
-            inputNama.setText(nama)
-            inputAbsen.setText(absen)
-            inputKelas.setText(kelas)
-            inputJurusan.setText(jurusan)
-            inputNama.isEnabled = false
-            inputKelas.isEnabled = false
-            inputJurusan.isEnabled = false
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val req = APIRequest("siswa/$id_user", "GET").execute()
+
+                withContext(Dispatchers.Main) {
+                    if (req.code in 200 until 300) {
+                        val siswa = JSONObject(req.data)
+
+                        binding.apply {
+                            inputNama.setText(siswa.getString("nama"))
+                            inputAbsen.setText(siswa.getString("no_absen"))
+                            inputKelas.setText(siswa.getString("kelas"))
+                            inputJurusan.setText(siswa.getString("kode_jurusan"))
+                            inputKelas.isEnabled = false
+                            inputJurusan.isEnabled = false
+                        }
+                    }
+                }
+            }
         }
 
         binding.btnKirim.setOnClickListener {
