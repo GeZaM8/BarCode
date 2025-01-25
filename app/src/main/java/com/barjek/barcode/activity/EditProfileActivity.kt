@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 
@@ -75,12 +77,34 @@ class EditProfileActivity : AppCompatActivity() {
             )
         }
 
+        val optionsKelas = mutableListOf<String>()
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val req = APIRequest("kelas").execute()
+
+                withContext(Dispatchers.Main) {
+                    if (req.code in 200 until 300) {
+                        val data = JSONArray(req.data)
+                        (0 until data.length()).forEach { index ->
+                            val objectKelas = data.getJSONObject(index)
+                            optionsKelas.add(objectKelas.getString("kelas"))
+                        }
+                        Log.d("KELAS", optionsKelas.toString())
+
+                        val adapter = ArrayAdapter(this@EditProfileActivity, android.R.layout.simple_dropdown_item_1line, optionsKelas)
+                        binding.inputKelasDropdown.setAdapter(adapter)
+                    }
+                }
+            }
+        }
+
         val userPref = getSharedPreferences("UserPref", MODE_PRIVATE)
         val id_user = userPref.getString("ID_USER", "")
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                val req = APIRequest("siswa/$id_user", "GET").execute()
+                val req = APIRequest("siswa/$id_user").execute()
 
                 withContext(Dispatchers.Main) {
                     if (req.code in 200 until 300) {
@@ -89,7 +113,7 @@ class EditProfileActivity : AppCompatActivity() {
                         binding.apply {
                             inputNama.setText(siswa.getString("nama"))
                             inputAbsen.setText(siswa.getString("no_absen"))
-                            inputKelas.setText(siswa.getString("kelas"))
+                            inputKelasDropdown.setText(siswa.getString("kelas"))
                             inputNisn.setText(siswa.getString("nisn"))
                             inputNis.setText(siswa.getString("nis"))
                             inputEmail.setText(siswa.getString("email"))
@@ -108,10 +132,16 @@ class EditProfileActivity : AppCompatActivity() {
         binding.btnUpdate.setOnClickListener {
             val nama_update = binding.inputNama.text.toString()
             val absen_update = binding.inputAbsen.text.toString()
-            val kelas_update = binding.inputKelas.text.toString()
+            val kelas_update = binding.inputKelasDropdown.text.toString()
             val nisn_update = binding.inputNisn.text.toString()
             val nis_update = binding.inputNis.text.toString()
             val email_update = binding.inputEmail.text.toString()
+
+            if (!optionsKelas.contains(kelas_update)) {
+                binding.inputKelasDropdown.setError("Pilih kelas yang benar")
+                return@setOnClickListener
+            }
+
             val data = JSONObject().apply {
                 put("id_user", id_user)
                 put("nama", nama_update)
@@ -125,7 +155,7 @@ class EditProfileActivity : AppCompatActivity() {
 
             val bitmap = (binding.ivPhoto.drawable as BitmapDrawable).bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
             val photoDataByte = byteArrayOutputStream.toByteArray()
 
             lifecycleScope.launch {
