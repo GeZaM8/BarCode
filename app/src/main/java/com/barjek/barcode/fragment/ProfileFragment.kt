@@ -20,6 +20,8 @@ import com.barjek.barcode.activity.LoginActivity
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.FragmentProfileBinding
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,6 +83,7 @@ class ProfileFragment : Fragment() {
 
     private fun loadData() {
         lifecycleScope.launch {
+
             withContext(Dispatchers.IO) {
                 val req = APIRequest("siswa/$id_user", "GET").execute()
 
@@ -95,6 +98,12 @@ class ProfileFragment : Fragment() {
                             tvNISN.text = siswa.getString("nama_jurusan")
                             tvNIS.text = siswa.getString("nis")
                         }
+                        val foto = siswa.getString("foto")
+                        Picasso.get()
+                            .load(foto)
+                            .placeholder(R.drawable.baseline_person_24)
+                            .error(R.drawable.baseline_person_24)
+                            .into(binding.ivProfile)
                     } else {
                         userPref.edit().clear().apply()
                         Log.d("PROFILE", req.data)

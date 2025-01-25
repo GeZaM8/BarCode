@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <ImageView
-            android:id="@+id/inputPhoto"
+            android:id="@+id/ivPhoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_person_24" />

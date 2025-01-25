@@ -39,7 +39,7 @@ class EditProfileActivity : AppCompatActivity() {
         if (result.isSuccessful) {
             val uri: Uri? = result.uriContent
             photoName = uri?.lastPathSegment.toString()
-            Picasso.get().load(uri).into(binding.inputPhoto)
+            Picasso.get().load(uri).into(binding.ivPhoto)
         } else {
             val error = result.error
             error?.printStackTrace()
@@ -53,6 +53,10 @@ class EditProfileActivity : AppCompatActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions())
         { permissions ->
@@ -62,7 +66,7 @@ class EditProfileActivity : AppCompatActivity() {
             if (cameraGranted && storageGranted) pickFromGallery()
         }
 
-        binding.inputPhoto.setOnClickListener {
+        binding.ivPhoto.setOnClickListener {
             requestPermissionLauncher.launch(
                 arrayOf(
                     Manifest.permission.CAMERA,
@@ -90,6 +94,12 @@ class EditProfileActivity : AppCompatActivity() {
                             inputNis.setText(siswa.getString("nis"))
                             inputEmail.setText(siswa.getString("email"))
                         }
+                        photoName = siswa.getString("foto")
+                        Picasso.get()
+                            .load(photoName)
+                            .placeholder(R.drawable.baseline_person_24)
+                            .error(R.drawable.baseline_person_24)
+                            .into(binding.ivPhoto)
                     }
                 }
             }
@@ -113,7 +123,7 @@ class EditProfileActivity : AppCompatActivity() {
                 put("foto", photoName)
             }
 
-            val bitmap = (binding.inputPhoto.drawable as BitmapDrawable).bitmap
+            val bitmap = (binding.ivPhoto.drawable as BitmapDrawable).bitmap
             val byteArrayOutputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
             val photoDataByte = byteArrayOutputStream.toByteArray()

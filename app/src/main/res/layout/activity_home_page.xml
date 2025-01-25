@@ -20,7 +20,7 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="20dp"
+            android:layout_gravity="bottom"
             android:elevation="0dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@color/blue4"/>
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="20dp"
+            android:layout_gravity="bottom"
             app:backgroundTint="@android:color/transparent"
             app:fabAlignmentMode="center"
             app:fabAnchorMode="cradle"
@@ -53,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:background="@android:color/transparent"
-                app:elevation="11dp"
                 app:itemIconTint="@color/icon_bottom_navbar"
                 app:itemRippleColor="@color/gray"
                 app:labelVisibilityMode="unlabeled"
@@ -63,10 +62,9 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnCamera"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:contentDescription="@null"
             android:src="@drawable/baseline_camera_alt_24"
-            app:elevation="5dp"
             app:layout_anchor="@id/bottomAppBar"
             app:layout_anchorGravity="center"
             app:shapeAppearanceOverlay="@style/fab_3_rounded" />
