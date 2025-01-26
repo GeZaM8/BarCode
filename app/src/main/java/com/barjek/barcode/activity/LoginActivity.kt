@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                             finishAffinity()
                         } else {
                             Log.d("Salah", "$response")
-                            Toast.makeText(this@LoginActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, "Email atau Password Salah", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

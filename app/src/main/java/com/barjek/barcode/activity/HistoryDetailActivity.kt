@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.barjek.barcode.R
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.databinding.ActivityHistoryDetailBinding
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,8 +34,27 @@ class HistoryDetailActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (req.code in 200 until 300) {
-                        val data = JSONObject(req.data)
-                        Log.d("ABSENSI DETAIL", data.toString())
+                        val siswa = JSONObject(req.data)
+
+                        val status = siswa.getString("status")
+                        binding.apply {
+                            textStatus.text = status
+                            textStatus.setBackgroundColor(if (status == "Hadir") getColor(R.color.lightGreen) else getColor(R.color.lightRed))
+
+                            textJam.text = siswa.getString("timestamp")
+                            textHari.text = siswa.getString("hari")
+                            textTgl.text = siswa.getString("tanggal")
+
+                            textNama.text = siswa.getString("nama")
+                            textKelas.text = siswa.getString("kelas")
+                            textAbsen.text = siswa.getString("no_absen")
+                        }
+                        val foto = siswa.getString("foto")
+                        Picasso.get()
+                            .load(foto)
+                            .placeholder(R.drawable.baseline_person_24)
+                            .error(R.drawable.baseline_person_24)
+                            .into(binding.ivPhoto)
                     }
                 }
             }

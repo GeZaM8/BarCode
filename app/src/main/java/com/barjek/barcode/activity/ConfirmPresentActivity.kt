@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
@@ -87,7 +88,7 @@ class ConfirmPresentActivity : AppCompatActivity() {
 
                         binding.apply {
                             inputNama.setText(siswa.getString("nama"))
-                            inputKelasDropdown.setText(siswa.getString("id_kelas"))
+                            inputKelasDropdown.setText(siswa.getString("kelas"))
                             inputJurusan.setText(siswa.getString("kode_jurusan"))
                             binding.inputMood.setText(mood)
                         }
@@ -143,6 +144,7 @@ class ConfirmPresentActivity : AppCompatActivity() {
             val uri: Uri? = result.uriContent
             photoName = uri?.lastPathSegment.toString()
             Picasso.get().load(uri).into(binding.ivPhoto)
+            binding.ivPhoto.setPadding(0)
         } else {
             val error = result.error
             error?.printStackTrace()
