@@ -34,20 +34,6 @@ import java.io.ByteArrayOutputStream
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProfileBinding
-
-    private lateinit var photoName: String
-
-    val cropImageLauncher = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful) {
-            val uri: Uri? = result.uriContent
-            photoName = uri?.lastPathSegment.toString()
-            Picasso.get().load(uri).into(binding.ivPhoto)
-        } else {
-            val error = result.error
-            error?.printStackTrace()
-        }
-    }
-
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +76,6 @@ class EditProfileActivity : AppCompatActivity() {
                             val objectKelas = data.getJSONObject(index)
                             optionsKelas.add(objectKelas.getString("kelas"))
                         }
-                        Log.d("KELAS", optionsKelas.toString())
 
                         val adapter = ArrayAdapter(this@EditProfileActivity, android.R.layout.simple_dropdown_item_1line, optionsKelas)
                         binding.inputKelasDropdown.setAdapter(adapter)
@@ -160,22 +145,31 @@ class EditProfileActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
-                    Log.d("DATA EDIT PROFILE", "${data}, image: $photoDataByte")
                     val req = APIRequest("update/siswa", "POST", data.toString(), photoDataByte).execute()
-                    Log.d("DATA REQ EDIT", req.data)
-                    val response = JSONObject(req.data)
+//                    val response = JSONObject(req.data)
 
                     withContext(Dispatchers.Main) {
                         if (req.code in 200 until 300) {
-                            Toast.makeText(this@EditProfileActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditProfileActivity, "Update berhasil", Toast.LENGTH_SHORT).show()
                             finish()
                         } else {
-                            Log.d("ERROR EDIT PROFILE", response.toString())
                             Toast.makeText(this@EditProfileActivity, "Gagal Update Profile", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             }
+        }
+    }
+
+    private lateinit var photoName: String
+    val cropImageLauncher = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            val uri: Uri? = result.uriContent
+            photoName = uri?.lastPathSegment.toString()
+            Picasso.get().load(uri).into(binding.ivPhoto)
+        } else {
+            val error = result.error
+            error?.printStackTrace()
         }
     }
 

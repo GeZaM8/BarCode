@@ -3,6 +3,7 @@ package com.barjek.barcode.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +14,7 @@ import com.barjek.barcode.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 
 class RegisterProfileActivity : AppCompatActivity() {
@@ -28,34 +30,56 @@ class RegisterProfileActivity : AppCompatActivity() {
 
         binding.inputNama.inputType = android.text.InputType.TYPE_CLASS_TEXT
         binding.inputAbsen.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-        binding.inputKelas.inputType = android.text.InputType.TYPE_CLASS_TEXT
+        binding.inputKelasDropdown.inputType = android.text.InputType.TYPE_CLASS_TEXT
         binding.inputJurusan.inputType = android.text.InputType.TYPE_CLASS_TEXT
         binding.inputNisn.inputType = android.text.InputType.TYPE_CLASS_NUMBER
         binding.inputNis.inputType = android.text.InputType.TYPE_CLASS_NUMBER
 
+        val optionsKelas = mutableListOf<String>()
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val req = APIRequest("kelas").execute()
+
+                withContext(Dispatchers.Main) {
+                    if (req.code in 200 until 300) {
+                        val data = JSONArray(req.data)
+                        (0 until data.length()).forEach { index ->
+                            val objectKelas = data.getJSONObject(index)
+                            optionsKelas.add(objectKelas.getString("kelas"))
+                        }
+                        Log.d("KELAS", optionsKelas.toString())
+
+                        val adapter = ArrayAdapter(this@RegisterProfileActivity, android.R.layout.simple_dropdown_item_1line, optionsKelas)
+                        binding.inputKelasDropdown.setAdapter(adapter)
+                    }
+                }
+            }
+        }
+
         binding.btnCreate.setOnClickListener {
             val nama = binding.inputNama.text.toString()
-            val absen = binding.inputAbsen.text.toString()
-            val kelas = binding.inputKelas.text.toString()
+            val kelas = binding.inputKelasDropdown.text.toString()
             val jurusan = binding.inputJurusan.text.toString()
-            val nisn = binding.inputNisn.text.toString()
+            val absen = binding.inputAbsen.text.toString()
             val nis = binding.inputNis.text.toString()
+            val nisn = binding.inputNisn.text.toString()
 
             val data = JSONObject().apply {
                 put("email", email)
                 put("password", password)
-                put("nama", binding.inputNama.text.toString())
-                put("kelas", binding.inputKelas.text.toString())
-                put("kode_jurusan", binding.inputJurusan.text.toString())
-                put("no_absen", binding.inputAbsen.text.toString())
-                put("nis", binding.inputNis.text.toString())
-                put("nisn", binding.inputNisn.text.toString())
+                put("nama", nama)
+                put("kelas", kelas)
+                put("kode_jurusan", jurusan)
+                put("no_absen", absen)
+                put("nis", nis)
+                put("nisn", nisn)
             }
 
             when {
                 nama.isEmpty() -> binding.inputNama.error = "Nama tidak boleh kosong"
                 absen.isEmpty() -> binding.inputAbsen.error = "Nomor absen tidak boleh kosong"
-                kelas.isEmpty() -> binding.inputKelas.error = "Kelas tidak boleh kosong"
+                kelas.isEmpty() -> binding.inputKelasDropdown.error = "Kelas tidak boleh kosong"
                 jurusan.isEmpty() -> binding.inputJurusan.error = "Jurusan tidak boleh kosong"
                 nisn.isEmpty() -> binding.inputNisn.error = "NISN tidak boleh kosong"
                 nis.isEmpty() -> binding.inputNis.error = "NIS tidak boleh kosong"
@@ -71,7 +95,8 @@ class RegisterProfileActivity : AppCompatActivity() {
                                     startActivity(Intent(this@RegisterProfileActivity, LoginActivity::class.java))
                                     finish()
                                 } else {
-                                    Toast.makeText(this@RegisterProfileActivity, response.getString("messages"), Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@RegisterProfileActivity, "Harap masukkan data anda dengan benar", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@RegisterProfileActivity, "Harap hubungi ", Toast.LENGTH_SHORT).show()
                                     Log.d("ERROR REGISTER", response.toString())
                                 }
                             }

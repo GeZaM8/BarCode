@@ -63,16 +63,6 @@ class APIRequest(
         }
     }
 
-    suspend fun getImage(): Bitmap? {
-        return withContext(Dispatchers.IO) {
-            try {
-                BitmapFactory.decodeStream(conn.inputStream)
-            } catch (e: Exception) {
-                null
-            }
-        }
-    }
-
     private fun writeMultipartData(photoDataByte: ByteArray?, data: String) {
         val outputStream = conn.outputStream
         val writer = BufferedWriter(OutputStreamWriter(outputStream, StandardCharsets.UTF_8))

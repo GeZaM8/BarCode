@@ -55,6 +55,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var db: DatabaseHelper
     private lateinit var cameraExecuter: ExecutorService
     private lateinit var barcodeScanner: BarcodeScanner
+    private lateinit var absensiDialog: AlertDialog
     private lateinit var absensi: AlertDialog.Builder
     private var dataQr: String? = null
 
@@ -151,11 +152,6 @@ class CameraActivity : AppCompatActivity() {
 //            .create()
 //
 //        dialog.show()
-
-        absensi = AlertDialog.Builder(this)
-        absensi.setOnDismissListener {
-            isScanned = false
-        }
     }
 
     private fun startCamera() {
@@ -189,17 +185,13 @@ class CameraActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalGetImage::class)
     private fun processImageProxy(imageProxy: ImageProxy) {
-        if (isScanned) {
-            imageProxy.close()
-            return
-        }
         val mediaImage = imageProxy.image
         if (mediaImage != null) {
             val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             barcodeScanner.process(image)
                 .addOnSuccessListener { barcodes ->
                     for (barcode in barcodes) {
-                        handleBarcode(barcode)
+                        if (!isScanned) handleBarcode(barcode)
                     }
                 }
                 .addOnFailureListener {
@@ -214,7 +206,7 @@ class CameraActivity : AppCompatActivity() {
     private fun handleBarcode(barcode: Barcode) {
         dataQr = barcode.url?.url ?: barcode.displayValue
         if (dataQr != null) {
-//            Log.d("Data QRCODE", dataQr)
+            isScanned = true
             val dataQrJSON = JSONObject().apply {
                 put("qrcode", dataQr)
             }
@@ -238,13 +230,13 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun absensi() {
-        val costumLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
-        val bindingView = LayoutChooseMoodBinding.bind(costumLayout)
+        val customLayout = layoutInflater.inflate(R.layout.layout_choose_mood, null)
+        val bindingView = LayoutChooseMoodBinding.bind(customLayout)
 
-        absensi.setView(costumLayout)
-        absensi.setCancelable(false)
-        absensi.show()
-        isScanned = true
+        absensi = AlertDialog.Builder(this)
+        absensiDialog = absensi.setView(customLayout)
+            .setCancelable(false)
+            .create()
 
         bindingView.smile.setOnClickListener {
             val costumLayout1 = layoutInflater.inflate(R.layout.layout_reason_mood, null)
@@ -261,10 +253,12 @@ class CameraActivity : AppCompatActivity() {
             val bindingView3 = LayoutReasonMoodBinding.bind(costumLayout3)
             absensiLayout(bindingView3, costumLayout3, R.drawable.frown)
         }
+        absensiDialog.show()
     }
 
     private fun absensiLayout(bindingView: LayoutReasonMoodBinding, customLayout: View, drawableMood: Int) {
-        absensi.setView(customLayout)
+        absensiDialog.dismiss()
+        absensiDialog = absensi.setView(customLayout).create()
         val (mood, text) = when (drawableMood) {
             R.drawable.smile -> "Happy" to R.string.baik
             R.drawable.neutral -> "Neutral" to R.string.biasa
@@ -274,26 +268,29 @@ class CameraActivity : AppCompatActivity() {
 
         bindingView.mood.setImageResource(drawableMood)
         bindingView.textView1.setText(text)
-        absensi.show()
         bindingView.btnKirim.setOnClickListener {
             val intent = Intent(this, ConfirmPresentActivity::class.java).apply {
                 putExtra("mood", mood)
-                putExtra("reason", bindingView.inputReason.text)
+                putExtra("reason", bindingView.inputReason.text.toString())
                 putExtra("qrcode", dataQr)
             }
+            absensiDialog.dismiss()
             startActivity(intent)
             finish()
         }
+        absensiDialog.show()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        absensiDialog.dismiss()
         cameraExecuter.shutdown()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(geofenceReceiver)
     }
 
     override fun onStop() {
         super.onStop()
+        absensiDialog.dismiss()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 

@@ -1,9 +1,11 @@
 package com.barjek.barcode.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.barjek.barcode.R
+import com.barjek.barcode.activity.HistoryDetailActivity
 import com.barjek.barcode.databinding.ItemHistoryBinding
 import com.barjek.barcode.model.Presence
 import org.json.JSONArray
@@ -34,5 +36,12 @@ class HistoryAdapter(private var items: JSONArray) : RecyclerView.Adapter<Histor
         holder.binding.textTgl.text = item.getString("tanggal")
         holder.binding.textJam.text = item.getString("timestamp")
         holder.binding.imgMood.setImageResource(img)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, HistoryDetailActivity::class.java).apply {
+                putExtra("id_absensi", item.getString("id_absensi"))
+            }
+            holder.itemView.context.startActivity(intent)
+        }
     }
 }
