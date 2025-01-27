@@ -21,8 +21,8 @@ class APIRequest(
     private val data: String? = null,
     private val photoDataByte: ByteArray? = null
 ) {
-//    private val base_url = "https://backend24.site/Rian/XI/barcode/"
-    private val base_url = "http://192.168.1.7:8080/"
+    private val base_url = "https://backend24.site/Rian/XI/barcode/"
+//    private val base_url = "http://192.168.1.5:8080/"
     private var conn = URL("$base_url/$url").openConnection() as HttpURLConnection
 
     private val boundary = "----Boundary${System.currentTimeMillis()}"

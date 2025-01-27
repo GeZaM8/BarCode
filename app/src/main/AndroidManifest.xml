@@ -52,9 +52,6 @@
             android:name=".activity.NoInsideActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.RegisterProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.LoginActivity"
             android:exported="false" />
         <activity

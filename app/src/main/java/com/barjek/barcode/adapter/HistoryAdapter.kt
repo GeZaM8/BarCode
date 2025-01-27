@@ -31,11 +31,17 @@ class HistoryAdapter(private var items: JSONArray) : RecyclerView.Adapter<Histor
             "Neutral" -> R.drawable.neutral
             else -> R.drawable.neutral
         }
+        val status = item.getString("status")
 
         holder.binding.textHari.text = item.getString("hari")
         holder.binding.textTgl.text = item.getString("tanggal")
         holder.binding.textJam.text = item.getString("timestamp")
         holder.binding.imgMood.setImageResource(img)
+        holder.binding.textStatus.text = status
+        holder.binding.textStatus.setBackgroundColor(
+            if (status == "Hadir") holder.itemView.context.getColor(R.color.lightGreen)
+            else holder.itemView.context.getColor(R.color.lightRed)
+        )
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, HistoryDetailActivity::class.java).apply {

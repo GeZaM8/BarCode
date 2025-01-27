@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -30,32 +31,48 @@
             android:id="@+id/textTgl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="Tanggal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textHari"
             app:layout_constraintVertical_bias="0.5" />
 
-        <TextView
-            android:id="@+id/textJam"
+        <LinearLayout
+            android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jam"
-            android:textColor="@color/blue"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/lightGreen"
+                android:padding="6dp"
+                android:text="TextView"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textJam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Jam"
+                android:textColor="@color/blue"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/imgMood"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textJam"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout9"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/smile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
