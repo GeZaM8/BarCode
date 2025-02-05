@@ -77,6 +77,7 @@ class RegisterActivity : AppCompatActivity() {
                                         } catch (e: JSONException) {
                                             Toast.makeText(this@RegisterActivity, "Aktivasi Gagal", Toast.LENGTH_SHORT).show()
                                         }
+                                        nis = ""; nisn = ""
                                     }
                                 }
                             }

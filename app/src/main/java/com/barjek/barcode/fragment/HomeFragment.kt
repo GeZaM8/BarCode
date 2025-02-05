@@ -17,7 +17,9 @@ import com.barjek.barcode.adapter.HistoryAdapter
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.FragmentHomeBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -51,15 +53,25 @@ class HomeFragment : Fragment() {
         db = DatabaseHelper(requireContext())
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
+        binding.shimmerRecyclerView.startShimmer()
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
         val sharedPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
         val id_user = sharedPref.getString("ID_USER", "")
 
         lifecycleScope.launch {
-            val req = APIRequest("absensi/$id_user").execute()
-            val data = JSONArray(req.data)
+            try {
+                val req = APIRequest("absensi/$id_user").execute()
+                withContext(Dispatchers.Main) {
+                    if (req.code in 200 until 300) {
+                        binding.recyclerHistory.visibility = View.VISIBLE
+                        binding.shimmerRecyclerView.stopShimmer()
+                        binding.shimmerRecyclerView.visibility = View.GONE
 
-            binding.recyclerHistory.adapter = HistoryAdapter(data)
+                        val data = JSONArray(req.data)
+                        binding.recyclerHistory.adapter = HistoryAdapter(data)
+                    }
+                }
+            } catch (_: Exception) {}
         }
 
         // Inflate the layout for this fragment

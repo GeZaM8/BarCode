@@ -44,8 +44,8 @@ class HomePageActivity : AppCompatActivity() {
         override fun onLost(network: Network) {
             super.onLost(network)
 
-            val intent = Intent(this@HomePageActivity, NoInternetActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(this@HomePageActivity, NoInternetActivity::class.java)
+//            startActivity(intent)
         }
     }
     val networkRequest = NetworkRequest.Builder()
@@ -64,10 +64,10 @@ class HomePageActivity : AppCompatActivity() {
         connectivityManager = getSystemService(ConnectivityManager::class.java) as ConnectivityManager
         connectivityManager.requestNetwork(networkRequest, networkCallback)
 
-        if(!isConnectInternet()) {
-            val intent = Intent(this, NoInternetActivity::class.java)
-            startActivity(intent)
-        }
+//        if(!isConnectInternet()) {
+//            val intent = Intent(this, NoInternetActivity::class.java)
+//            startActivity(intent)
+//        }
 
         replaceFragment(HomeFragment())
         binding.btnNavbar.setOnItemSelectedListener {item ->
@@ -94,17 +94,17 @@ class HomePageActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun isConnectInternet(): Boolean {
-        val network = connectivityManager.activeNetwork ?: return false
-
-        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-        return when {
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-            else -> false
-        }
-    }
+//    private fun isConnectInternet(): Boolean {
+//        val network = connectivityManager.activeNetwork ?: return false
+//
+//        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+//
+//        return when {
+//            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+//            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+//            else -> false
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

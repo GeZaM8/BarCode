@@ -15,4 +15,5 @@
     <color name="red">#E86363</color>
     <color name="lightRed">#FFB0AE</color>
     <color name="lightGreen">#B0FFAE</color>
+    <color name="shimmer_placeholder">#D1D1D1</color>
 </resources>
