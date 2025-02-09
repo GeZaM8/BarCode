@@ -202,7 +202,7 @@
             style="@style/buttonGradient"
             android:layout_width="match_parent"
             android:layout_height="51dp"
-            android:text="@string/kirim" />
+            android:text="@string/kirim"/>
 
     </LinearLayout>
 

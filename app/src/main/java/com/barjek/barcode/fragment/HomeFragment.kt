@@ -71,7 +71,10 @@ class HomeFragment : Fragment() {
                         binding.recyclerHistory.adapter = HistoryAdapter(data)
                     }
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+
+
+            }
         }
 
         // Inflate the layout for this fragment

@@ -1,10 +1,17 @@
 package com.barjek.barcode.activity
 
 import android.Manifest
+import android.animation.AnimatorInflater
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +19,10 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.lifecycle.lifecycleScope
+import com.barjek.barcode.R
 import com.barjek.barcode.api.APIRequest
 import com.barjek.barcode.database.DatabaseHelper
 import com.barjek.barcode.databinding.ActivityConfirmPresentBinding
@@ -97,7 +106,13 @@ class ConfirmPresentActivity : AppCompatActivity() {
             }
         }
 
+        val animDrawable = binding.btnKirim.background as AnimationDrawable
+        animDrawable.setEnterFadeDuration(10)
+        animDrawable.setExitFadeDuration(500)
+
         binding.btnKirim.setOnClickListener {
+            animDrawable.start()
+
             val dataUserJSON = JSONObject().apply {
                 put("id_user", id_user)
                 put("status", status)
@@ -107,38 +122,38 @@ class ConfirmPresentActivity : AppCompatActivity() {
                 put("foto", photoName)
             }
 
-            val bitmap = (binding.ivPhoto.drawable as BitmapDrawable).bitmap
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
-            val photoDataByte = byteArrayOutputStream.toByteArray()
-
-            lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
-                    val req = APIRequest("absensi", "POST", dataUserJSON.toString(), photoDataByte).execute()
-                    val responseJSON = JSONObject(req.data)
-                    withContext(Dispatchers.Main) {
-                        if (req.code in 200 until 300) {
-                            Toast.makeText(
-                                this@ConfirmPresentActivity,
-                                "Anda berhasil absensi",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
-                        } else {
-                            Log.d("RESPONSEJSON", responseJSON.toString())
-                            Toast.makeText(
-                                this@ConfirmPresentActivity,
-                                "Terjadi Kesalahan",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
-            }
+//            val bitmap = (binding.ivPhoto.drawable as BitmapDrawable).bitmap
+//            val byteArrayOutputStream = ByteArrayOutputStream()
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+//            val photoDataByte = byteArrayOutputStream.toByteArray()
+//
+//            lifecycleScope.launch {
+//                withContext(Dispatchers.IO) {
+//                    val req = APIRequest("absensi", "POST", dataUserJSON.toString(), photoDataByte).execute()
+//                    val responseJSON = JSONObject(req.data)
+//                    withContext(Dispatchers.Main) {
+//                        if (req.code in 200 until 300) {
+//                            Toast.makeText(
+//                                this@ConfirmPresentActivity,
+//                                "Anda berhasil absensi",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                            finish()
+//                        } else {
+//                            Log.d("RESPONSEJSON", responseJSON.toString())
+//                            Toast.makeText(
+//                                this@ConfirmPresentActivity,
+//                                "Terjadi Kesalahan",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
-    private lateinit var photoName: String
+    private var photoName: String = ""
     val cropImageLauncher = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             val uri: Uri? = result.uriContent
