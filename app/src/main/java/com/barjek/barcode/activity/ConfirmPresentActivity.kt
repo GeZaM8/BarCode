@@ -31,7 +31,9 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -112,6 +114,32 @@ class ConfirmPresentActivity : AppCompatActivity() {
 
         binding.btnKirim.setOnClickListener {
             animDrawable.start()
+
+            val originalText = binding.btnKirim.text.toString()
+            val loadingText = "Loading"
+            val dots = arrayOf("...", "..", ".", "", ".", "..", "...")
+            val delay1 = 50L
+            val delay2 = 200L
+
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(delay1)
+                for (i in originalText.length downTo 0) {
+                    binding.btnKirim.text = originalText.substring(0, i)
+                    delay(delay1)
+                }
+
+                for (i in 1..loadingText.length) {
+                    binding.btnKirim.text = loadingText.substring(0, i)
+                    delay(delay1)
+                }
+
+                while (true) {
+                    for (i in dots.indices) {
+                        binding.btnKirim.text = loadingText + dots[i]
+                        delay(delay2)
+                    }
+                }
+            }
 
             val dataUserJSON = JSONObject().apply {
                 put("id_user", id_user)
