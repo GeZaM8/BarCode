@@ -43,9 +43,6 @@ class HomePageActivity : AppCompatActivity() {
         // lost network connection
         override fun onLost(network: Network) {
             super.onLost(network)
-
-//            val intent = Intent(this@HomePageActivity, NoInternetActivity::class.java)
-//            startActivity(intent)
         }
     }
     val networkRequest = NetworkRequest.Builder()

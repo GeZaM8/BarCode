@@ -1,6 +1,10 @@
 package com.barjek.barcode.fragment
 
 import android.graphics.Paint
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -10,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.barjek.barcode.R
@@ -39,6 +44,30 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var db: DatabaseHelper
 
+    private var id_user: String? = null
+
+    private lateinit var connectivityManager: ConnectivityManager
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        // Network capabilities have changed for the network
+        override fun onCapabilitiesChanged(
+            network: Network,
+            networkCapabilities: NetworkCapabilities
+        ) {
+            super.onCapabilitiesChanged(network, networkCapabilities)
+            val unmetered = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED)
+        }
+
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            dataApi()
+        }
+    }
+    val networkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .build()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -53,11 +82,20 @@ class HomeFragment : Fragment() {
         db = DatabaseHelper(requireContext())
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
+        connectivityManager = requireActivity().getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+        connectivityManager.requestNetwork(networkRequest, networkCallback)
+
         binding.shimmerRecyclerView.startShimmer()
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
         val sharedPref = requireActivity().getSharedPreferences("UserPref", MODE_PRIVATE)
-        val id_user = sharedPref.getString("ID_USER", "")
+        id_user = sharedPref.getString("ID_USER", "")
 
+        dataApi()
+        // Inflate the layout for this fragment
+        return binding.root
+    }
+
+    fun dataApi() {
         lifecycleScope.launch {
             try {
                 val req = APIRequest("absensi/$id_user").execute()
@@ -76,9 +114,6 @@ class HomeFragment : Fragment() {
 
             }
         }
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
     companion object {

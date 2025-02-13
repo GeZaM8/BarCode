@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/btn_gradient"
+        android:src="@drawable/logo_long"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -197,6 +197,6 @@
         android:layout_marginEnd="411dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.92" />
+        app:layout_constraintGuide_begin="673dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

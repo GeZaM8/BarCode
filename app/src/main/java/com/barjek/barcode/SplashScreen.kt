@@ -47,7 +47,6 @@ class SplashScreen : AppCompatActivity() {
 
         val intent = when(isFirstRun) {
             true -> {
-                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
                 Intent(this, StartActivity::class.java)
             }
             else -> {

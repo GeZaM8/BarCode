@@ -30,6 +30,9 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val sharedPreferences = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
         
         dbHelper = DatabaseHelper(this)
 
